@@ -32,16 +32,11 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.programToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miExit = new System.Windows.Forms.ToolStripMenuItem();
             this.utilitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.miSelectDefaultShow = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.resetStatusBarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miAboutBox = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,8 +46,6 @@
             this.lblCurrentShowHeader = new System.Windows.Forms.Label();
             this.lblPlaylistNameHeader = new System.Windows.Forms.Label();
             this.lblPlaylistName = new System.Windows.Forms.Label();
-            this.lblTrioChannelHeader = new System.Windows.Forms.Label();
-            this.lblTrioChannel = new System.Windows.Forms.Label();
             this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.st = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -68,14 +61,11 @@
             this.btnSelectShow = new System.Windows.Forms.Button();
             this.availableShowsGrid = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.availablePlaylistsGrid = new System.Windows.Forms.DataGridView();
-            this.btnSelectPlaylist = new System.Windows.Forms.Button();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnRefreshShowList = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.gbTime.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.availableShowsGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.availablePlaylistsGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -86,7 +76,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(976, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(774, 24);
             this.menuStrip1.TabIndex = 48;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -108,29 +98,15 @@
             // utilitiesToolStripMenuItem
             // 
             this.utilitiesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miSelectDefaultShow,
-            this.toolStripMenuItem1,
             this.resetStatusBarToolStripMenuItem});
             this.utilitiesToolStripMenuItem.Name = "utilitiesToolStripMenuItem";
             this.utilitiesToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.utilitiesToolStripMenuItem.Text = "&Utilities";
             // 
-            // miSelectDefaultShow
-            // 
-            this.miSelectDefaultShow.Name = "miSelectDefaultShow";
-            this.miSelectDefaultShow.Size = new System.Drawing.Size(170, 22);
-            this.miSelectDefaultShow.Text = "&Select Default Show";
-            this.miSelectDefaultShow.Click += new System.EventHandler(this.miSelectDefaultShow_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(167, 6);
-            // 
             // resetStatusBarToolStripMenuItem
             // 
             this.resetStatusBarToolStripMenuItem.Name = "resetStatusBarToolStripMenuItem";
-            this.resetStatusBarToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.resetStatusBarToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.resetStatusBarToolStripMenuItem.Text = "&Reset Status Bar";
             this.resetStatusBarToolStripMenuItem.Click += new System.EventHandler(this.resetStatusBarToolStripMenuItem_Click);
             // 
@@ -155,7 +131,7 @@
             this.toolStripStatusLabel});
             this.statusStrip.Location = new System.Drawing.Point(0, 384);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(976, 22);
+            this.statusStrip.Size = new System.Drawing.Size(774, 22);
             this.statusStrip.TabIndex = 53;
             this.statusStrip.Text = "statusStrip";
             // 
@@ -206,26 +182,6 @@
             this.lblPlaylistName.Size = new System.Drawing.Size(34, 16);
             this.lblPlaylistName.TabIndex = 89;
             this.lblPlaylistName.Text = "N/A";
-            // 
-            // lblTrioChannelHeader
-            // 
-            this.lblTrioChannelHeader.AutoSize = true;
-            this.lblTrioChannelHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTrioChannelHeader.Location = new System.Drawing.Point(769, 44);
-            this.lblTrioChannelHeader.Name = "lblTrioChannelHeader";
-            this.lblTrioChannelHeader.Size = new System.Drawing.Size(100, 16);
-            this.lblTrioChannelHeader.TabIndex = 90;
-            this.lblTrioChannelHeader.Text = "Trio Channel:";
-            // 
-            // lblTrioChannel
-            // 
-            this.lblTrioChannel.AutoSize = true;
-            this.lblTrioChannel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTrioChannel.Location = new System.Drawing.Point(866, 44);
-            this.lblTrioChannel.Name = "lblTrioChannel";
-            this.lblTrioChannel.Size = new System.Drawing.Size(34, 16);
-            this.lblTrioChannel.TabIndex = 91;
-            this.lblTrioChannel.Text = "N/A";
             // 
             // Type
             // 
@@ -333,12 +289,13 @@
             this.btnSelectShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSelectShow.Image = global::GUILayer.Properties.Resources.StatusAnnotations_Complete_and_ok_16xLG_color;
             this.btnSelectShow.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSelectShow.Location = new System.Drawing.Point(213, 325);
+            this.btnSelectShow.Location = new System.Drawing.Point(192, 323);
             this.btnSelectShow.Name = "btnSelectShow";
             this.btnSelectShow.Size = new System.Drawing.Size(130, 40);
             this.btnSelectShow.TabIndex = 125;
-            this.btnSelectShow.Text = " Select\r\n(Ctrl-S)";
+            this.btnSelectShow.Text = " Select\r\n Show(Ctrl-S)";
             this.btnSelectShow.UseVisualStyleBackColor = true;
+            this.btnSelectShow.Click += new System.EventHandler(this.btnSelectShow_Click);
             // 
             // availableShowsGrid
             // 
@@ -364,7 +321,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.availableShowsGrid.DefaultCellStyle = dataGridViewCellStyle2;
-            this.availableShowsGrid.Location = new System.Drawing.Point(77, 116);
+            this.availableShowsGrid.Location = new System.Drawing.Point(12, 112);
             this.availableShowsGrid.MultiSelect = false;
             this.availableShowsGrid.Name = "availableShowsGrid";
             this.availableShowsGrid.ReadOnly = true;
@@ -378,7 +335,7 @@
             this.availableShowsGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.availableShowsGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.availableShowsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.availableShowsGrid.Size = new System.Drawing.Size(402, 196);
+            this.availableShowsGrid.Size = new System.Drawing.Size(339, 196);
             this.availableShowsGrid.TabIndex = 124;
             // 
             // dataGridViewTextBoxColumn2
@@ -389,83 +346,32 @@
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
             this.dataGridViewTextBoxColumn2.Width = 360;
             // 
-            // availablePlaylistsGrid
+            // btnRefreshShowList
             // 
-            this.availablePlaylistsGrid.AllowUserToAddRows = false;
-            this.availablePlaylistsGrid.AllowUserToDeleteRows = false;
-            this.availablePlaylistsGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.availablePlaylistsGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.availablePlaylistsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.availablePlaylistsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.availablePlaylistsGrid.DefaultCellStyle = dataGridViewCellStyle5;
-            this.availablePlaylistsGrid.Location = new System.Drawing.Point(494, 116);
-            this.availablePlaylistsGrid.MultiSelect = false;
-            this.availablePlaylistsGrid.Name = "availablePlaylistsGrid";
-            this.availablePlaylistsGrid.ReadOnly = true;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.availablePlaylistsGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.availablePlaylistsGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.availablePlaylistsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.availablePlaylistsGrid.Size = new System.Drawing.Size(402, 196);
-            this.availablePlaylistsGrid.TabIndex = 126;
-            // 
-            // btnSelectPlaylist
-            // 
-            this.btnSelectPlaylist.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSelectPlaylist.Image = global::GUILayer.Properties.Resources.StatusAnnotations_Complete_and_ok_16xLG_color;
-            this.btnSelectPlaylist.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSelectPlaylist.Location = new System.Drawing.Point(626, 325);
-            this.btnSelectPlaylist.Name = "btnSelectPlaylist";
-            this.btnSelectPlaylist.Size = new System.Drawing.Size(130, 40);
-            this.btnSelectPlaylist.TabIndex = 127;
-            this.btnSelectPlaylist.Text = " Select\r\n(Ctrl-P)";
-            this.btnSelectPlaylist.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "PlaylistName";
-            this.dataGridViewTextBoxColumn1.HeaderText = "Playlist Name";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Width = 360;
+            this.btnRefreshShowList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefreshShowList.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshShowList.Image")));
+            this.btnRefreshShowList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRefreshShowList.Location = new System.Drawing.Point(36, 323);
+            this.btnRefreshShowList.Name = "btnRefreshShowList";
+            this.btnRefreshShowList.Size = new System.Drawing.Size(130, 40);
+            this.btnRefreshShowList.TabIndex = 126;
+            this.btnRefreshShowList.Text = "Refresh";
+            this.btnRefreshShowList.UseVisualStyleBackColor = true;
+            this.btnRefreshShowList.Click += new System.EventHandler(this.btnRefreshShowList_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.ClientSize = new System.Drawing.Size(976, 406);
-            this.Controls.Add(this.btnSelectPlaylist);
-            this.Controls.Add(this.availablePlaylistsGrid);
+            this.ClientSize = new System.Drawing.Size(774, 406);
+            this.Controls.Add(this.btnRefreshShowList);
             this.Controls.Add(this.btnSelectShow);
             this.Controls.Add(this.availableShowsGrid);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lblHostName);
             this.Controls.Add(this.lblIpAddress);
             this.Controls.Add(this.gbTime);
-            this.Controls.Add(this.lblTrioChannel);
-            this.Controls.Add(this.lblTrioChannelHeader);
             this.Controls.Add(this.lblPlaylistName);
             this.Controls.Add(this.lblPlaylistNameHeader);
             this.Controls.Add(this.lblCurrentShow);
@@ -485,7 +391,6 @@
             this.statusStrip.PerformLayout();
             this.gbTime.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.availableShowsGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.availablePlaylistsGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -501,14 +406,10 @@
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private System.Windows.Forms.ToolStripMenuItem utilitiesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem miSelectDefaultShow;
         private System.Windows.Forms.Label lblCurrentShow;
         private System.Windows.Forms.Label lblCurrentShowHeader;
         private System.Windows.Forms.Label lblPlaylistNameHeader;
         private System.Windows.Forms.Label lblPlaylistName;
-        private System.Windows.Forms.Label lblTrioChannelHeader;
-        private System.Windows.Forms.Label lblTrioChannel;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem resetStatusBarToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn st;
@@ -525,9 +426,7 @@
         private System.Windows.Forms.Button btnSelectShow;
         private System.Windows.Forms.DataGridView availableShowsGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridView availablePlaylistsGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.Button btnSelectPlaylist;
+        private System.Windows.Forms.Button btnRefreshShowList;
     }
 }
 

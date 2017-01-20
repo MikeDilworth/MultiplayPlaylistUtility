@@ -5,18 +5,13 @@
 //////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using DataInterface.DataAccess;
-using DataInterface.DataModel;
 using log4net.Appender;
-using LogicLayer.Collections;
 using LogicLayer.CommonClasses;
 using MSEInterface;
-using MSEInterface.Constants;
+using MSEInterface.DataModel;
 // Required for implementing logging to status bar
 
 //
@@ -34,14 +29,6 @@ namespace GUILayer.Forms
         #region Globals
         DateTime referenceTime = DateTime.MaxValue;
 
-        //string elementCollectionURIShow;
-        //string templateCollectionURIShow;
-        //string elementCollectionURIPlaylist;
-        //string templateModel;
-
-        //Int16 conceptID;
-        //string conceptName;
-
         public Boolean enableShowSelectControls = false;
 
         #endregion
@@ -50,9 +37,6 @@ namespace GUILayer.Forms
         /// <summary>
         /// Define classes for collections and logic
         /// </summary>
-
-        // Define the binding list object for the list of available shows
-        //BindingList<ShowObject> showNames;
         
         internal static readonly XNamespace Atom = "http://www.w3.org/2005/Atom";
 
@@ -64,23 +48,21 @@ namespace GUILayer.Forms
         MANAGE_ELEMENTS element = new MANAGE_ELEMENTS();
 
         // Read in MSE settings from config file and set default directories and parameters
-        Boolean usingPrimaryMediaSequencer = true;
-        Boolean mseEndpoint1_Enable = false;
         string mseEndpoint1 = string.Empty;
-        Boolean mseEndpoint2_Enable = false;
         string mseEndpoint2 = string.Empty;
         string topLevelShowsDirectoryURI = string.Empty;
         string masterPlaylistsDirectoryURI = string.Empty;
-        string profilesURI = string.Empty;
         string currentShowName = string.Empty;
-        string currentPlaylistName = string.Empty;
+        string ProducerElementsPlaylistName = string.Empty;
 
         // Read in database connection strings
         string LoggingDBConnectionString = Properties.Settings.Default.LoggingDBConnectionString;
 
-        //Read in default Trio profile and channel
-        string defaultTrioProfile = Properties.Settings.Default.DefaultTrioProfile;
-        string defaultTrioChannel = Properties.Settings.Default.DefaultTrioChannel;                        
+        // Define the binding list object for the list of available shows
+        private BindingList<ShowObject> showNames;
+        // The sublist ID to be returned 
+        public string selectedShow { get; set; }
+
         #endregion
 
         #region Logger instantiation - uses reflection to get module name
@@ -123,20 +105,6 @@ namespace GUILayer.Forms
 
             try
             {
-                // Setup show controls
-                if (Properties.Settings.Default.EnableShowSelectControls)
-                    enableShowSelectControls = true;
-                else
-                    enableShowSelectControls = false;
-                if (enableShowSelectControls)
-                {
-                    miSelectDefaultShow.Enabled = true;
-                }
-                else
-                {
-                    miSelectDefaultShow.Enabled = false;
-                }
-
                 // Update status
                 toolStripStatusLabel.Text = "Starting program initialization.";
 
@@ -171,8 +139,7 @@ namespace GUILayer.Forms
 
             // Update status labels
             toolStripStatusLabel.Text = "Program initialization complete.";
-            lblPlaylistName.Text = currentPlaylistName;
-            lblTrioChannel.Text = defaultTrioChannel;
+            lblPlaylistName.Text = ProducerElementsPlaylistName;
         }
 
         // Handler for main form load
@@ -181,14 +148,21 @@ namespace GUILayer.Forms
             // Read in config settings - default to Media Sequencer #1
             mseEndpoint1 = Properties.Settings.Default.MSEEndpoint1;
             mseEndpoint2 = Properties.Settings.Default.MSEEndpoint2;
-            mseEndpoint1_Enable = Properties.Settings.Default.MSEEndpoint1_Enable;
-            mseEndpoint2_Enable = Properties.Settings.Default.MSEEndpoint2_Enable;
             topLevelShowsDirectoryURI = Properties.Settings.Default.MSEEndpoint1 + Properties.Settings.Default.TopLevelShowsDirectory;
             masterPlaylistsDirectoryURI = Properties.Settings.Default.MSEEndpoint1 + Properties.Settings.Default.MasterPlaylistsDirectory;
-            profilesURI = Properties.Settings.Default.MSEEndpoint1 + "profiles";
             currentShowName = Properties.Settings.Default.CurrentShowName;
-            currentPlaylistName = Properties.Settings.Default.CurrentSelectedPlaylist;
-            usingPrimaryMediaSequencer = true;
+            ProducerElementsPlaylistName = Properties.Settings.Default.ProducerElementsPlaylistName;
+
+            // Populate grid/list of shows
+            // Gets the URI's for available shows
+            MANAGE_SHOWS getShowList = new MANAGE_SHOWS();
+
+            showNames = getShowList.GetListOfShows(mseEndpoint1 + Properties.Settings.Default.TopLevelShowsDirectory);
+
+            // Setup the available stacks grid
+            availableShowsGrid.AutoGenerateColumns = false;
+            var availableShowsGridDataSource = new BindingSource(showNames, null);
+            availableShowsGrid.DataSource = availableShowsGridDataSource;
 
             // Log application start
             log.Info("Starting Stack Builder application");
@@ -256,33 +230,6 @@ namespace GUILayer.Forms
                 log.Debug("frmMain Exception occurred", ex);
             }
         }
-
-        // Handler from main menu to launch show selection dialog
-        private void miSelectDefaultShow_Click(object sender, EventArgs e)
-        {
-            DialogResult dr = new DialogResult();
-            string mseEndpoint = string.Empty;
-            if (usingPrimaryMediaSequencer)
-            {
-                mseEndpoint = mseEndpoint1;
-            }
-            else
-            {
-                mseEndpoint = mseEndpoint2;
-            }
-            frmSelectShow selectShow = new frmSelectShow(mseEndpoint);
-            dr = selectShow.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                // Set the new show
-                currentShowName = selectShow.selectedShow;
-                lblCurrentShow.Text = currentShowName;
-
-                // Write the new default show out to the config file
-                Properties.Settings.Default.CurrentShowName = currentShowName;
-                Properties.Settings.Default.Save();
-            }
-        }
         #endregion
 
         #region UI widget data validation methods
@@ -302,5 +249,53 @@ namespace GUILayer.Forms
         }
         #endregion
 
+        // Handler for Select Show button
+        private void btnSelectShow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Set the sublist ID
+                if (showNames.Count > 0)
+                {
+                    //Get the playlist ID from the grid
+                    int currentShowIndex = availableShowsGrid.CurrentCell.RowIndex;
+                    string ShowName = showNames[currentShowIndex].title.ToString();
+
+                    //DialogResult result1 = MessageBox.Show("Are you sure you want to switch to the new show: " + ShowName + "?", "Confirmation",
+                    //                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    //if (result1 != DialogResult.Yes)
+                    //{
+                    //    return;
+                    //}
+
+                    // Set new show name
+                    selectedShow = ShowName;
+                    lblCurrentShow.Text = selectedShow;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                log.Error("Select Show exception occurred: " + ex.Message);
+                log.Debug("Select Show exception occurred", ex);
+            }
+
+        }
+
+        // Handler for button to refresh list of shows
+        private void btnRefreshShowList_Click(object sender, EventArgs e)
+        {
+            showNames.Clear();
+
+            // Gets the URI's for available shows
+            MANAGE_SHOWS getShowList = new MANAGE_SHOWS();
+
+            showNames = getShowList.GetListOfShows(mseEndpoint1 + Properties.Settings.Default.TopLevelShowsDirectory);
+
+            // Setup the available stacks grid
+            availableShowsGrid.AutoGenerateColumns = false;
+            var availableShowsGridDataSource = new BindingSource(showNames, null);
+            availableShowsGrid.DataSource = availableShowsGridDataSource;
+        }
     }
 }

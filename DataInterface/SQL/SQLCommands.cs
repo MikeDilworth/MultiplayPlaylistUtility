@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataInterface.SQL
+﻿namespace DataInterface.SQL
 {
     /// <summary>
     /// Class for static SQL command strings

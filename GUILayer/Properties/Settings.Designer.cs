@@ -34,37 +34,10 @@ namespace GUILayer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MJD Test Profile")]
-        public string DefaultTrioProfile {
-            get {
-                return ((string)(this["DefaultTrioProfile"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://172.21.0.35:8580/")]
         public string MSEEndpoint2 {
             get {
                 return ((string)(this["MSEEndpoint2"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool MSEEndpoint1_Enable {
-            get {
-                return ((bool)(this["MSEEndpoint1_Enable"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool MSEEndpoint2_Enable {
-            get {
-                return ((bool)(this["MSEEndpoint2_Enable"]));
             }
         }
         
@@ -88,13 +61,13 @@ namespace GUILayer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("GRAPHICS")]
-        public string CurrentSelectedPlaylist {
+        [global::System.Configuration.DefaultSettingValueAttribute("PRODUCER_ELEMENTS")]
+        public string ProducerElementsPlaylistName {
             get {
-                return ((string)(this["CurrentSelectedPlaylist"]));
+                return ((string)(this["ProducerElementsPlaylistName"]));
             }
             set {
-                this["CurrentSelectedPlaylist"] = value;
+                this["ProducerElementsPlaylistName"] = value;
             }
         }
         
@@ -119,15 +92,6 @@ namespace GUILayer.Properties {
             }
             set {
                 this["CurrentShowName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[PROGRAM]")]
-        public string DefaultTrioChannel {
-            get {
-                return ((string)(this["DefaultTrioChannel"]));
             }
         }
         
@@ -162,7 +126,7 @@ namespace GUILayer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool EnableShowSelectControls {
             get {
                 return ((bool)(this["EnableShowSelectControls"]));
