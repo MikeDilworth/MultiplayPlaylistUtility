@@ -2,11 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GUILayer.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="MSEEndpoint1" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://172.21.0.35:8580/</Value>
+    <Setting Name="MSEIPAddressSource" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">172.21.0.35</Value>
     </Setting>
-    <Setting Name="MSEEndpoint2" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://172.21.0.35:8580/</Value>
+    <Setting Name="MSEIPAddressDestination" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
     <Setting Name="TopLevelShowsDirectory" Type="System.String" Scope="Application">
       <Value Profile="(Default)">directory/shows/MULTIPLAY/</Value>
@@ -16,12 +16,6 @@
     </Setting>
     <Setting Name="ProducerElementsPlaylistName" Type="System.String" Scope="User">
       <Value Profile="(Default)">PRODUCER_ELEMENTS</Value>
-    </Setting>
-    <Setting Name="CurrentShowPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MULTIPLAY/MAIN_WALL</Value>
-    </Setting>
-    <Setting Name="CurrentShowName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MAIN_WALL</Value>
     </Setting>
     <Setting Name="ApplicationID" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">20</Value>
@@ -38,6 +32,12 @@
     </Setting>
     <Setting Name="EnableShowSelectControls" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MSEPortRest" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">8580</Value>
+    </Setting>
+    <Setting Name="MSEPortPepTalk" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">8594</Value>
     </Setting>
   </Settings>
 </SettingsFile>

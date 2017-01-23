@@ -60,9 +60,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.PowerPacks, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -143,6 +147,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AsyncClientSocket\ClientSocket.csproj">
+      <Project>{6a71627c-fcc3-44b1-8206-9d5057684759}</Project>
+      <Name>ClientSocket</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataInterface\DataInterface.csproj">
       <Project>{24a8cef0-cff0-447b-80f9-5399ba0354f1}</Project>
       <Name>DataInterface</Name>

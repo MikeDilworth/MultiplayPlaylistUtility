@@ -85,7 +85,7 @@
             this.labelProductName.Name = "labelProductName";
             this.labelProductName.Size = new System.Drawing.Size(184, 17);
             this.labelProductName.TabIndex = 19;
-            this.labelProductName.Text = "Election Graphics Builder Application";
+            this.labelProductName.Text = "Multi-Play Playlist Utility";
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelVersion
@@ -153,7 +153,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "About Election Graphics Builder Application";
+            this.Text = "About Multi-Play Playlist Utility";
             this.tableLayoutPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
             this.ResumeLayout(false);

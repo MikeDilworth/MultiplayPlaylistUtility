@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace MSEInterface
 {
-    //Class to instantiate a REST_CLIENT and RES_RESPONSE, and request an XElement object for the specified URI
+    //Class to instantiate a REST_CLIENT and REST_RESPONSE, and request an XElement object for the specified URI
     public class GET_URI
     {
 

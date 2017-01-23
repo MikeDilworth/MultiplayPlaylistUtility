@@ -25,19 +25,19 @@ namespace GUILayer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://172.21.0.35:8580/")]
-        public string MSEEndpoint1 {
+        [global::System.Configuration.DefaultSettingValueAttribute("172.21.0.35")]
+        public string MSEIPAddressSource {
             get {
-                return ((string)(this["MSEEndpoint1"]));
+                return ((string)(this["MSEIPAddressSource"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://172.21.0.35:8580/")]
-        public string MSEEndpoint2 {
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        public string MSEIPAddressDestination {
             get {
-                return ((string)(this["MSEEndpoint2"]));
+                return ((string)(this["MSEIPAddressDestination"]));
             }
         }
         
@@ -68,30 +68,6 @@ namespace GUILayer.Properties {
             }
             set {
                 this["ProducerElementsPlaylistName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MULTIPLAY/MAIN_WALL")]
-        public string CurrentShowPath {
-            get {
-                return ((string)(this["CurrentShowPath"]));
-            }
-            set {
-                this["CurrentShowPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MAIN_WALL")]
-        public string CurrentShowName {
-            get {
-                return ((string)(this["CurrentShowName"]));
-            }
-            set {
-                this["CurrentShowName"] = value;
             }
         }
         
@@ -130,6 +106,27 @@ namespace GUILayer.Properties {
         public bool EnableShowSelectControls {
             get {
                 return ((bool)(this["EnableShowSelectControls"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8580")]
+        public int MSEPortRest {
+            get {
+                return ((int)(this["MSEPortRest"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8594")]
+        public int MSEPortPepTalk {
+            get {
+                return ((int)(this["MSEPortPepTalk"]));
+            }
+            set {
+                this["MSEPortPepTalk"] = value;
             }
         }
     }

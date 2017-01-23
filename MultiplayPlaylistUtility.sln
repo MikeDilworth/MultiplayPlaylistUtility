@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLayer", "LogicLayer\Lo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUILayer", "GUILayer\GUILayer.csproj", "{6547E8A7-E9A7-4704-A1DA-28F5ACCB5555}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientSocket", "AsyncClientSocket\ClientSocket.csproj", "{6A71627C-FCC3-44B1-8206-9D5057684759}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,18 @@ Global
 		{6547E8A7-E9A7-4704-A1DA-28F5ACCB5555}.Release|Mixed Platforms.Build.0 = Release|x86
 		{6547E8A7-E9A7-4704-A1DA-28F5ACCB5555}.Release|x86.ActiveCfg = Release|x86
 		{6547E8A7-E9A7-4704-A1DA-28F5ACCB5555}.Release|x86.Build.0 = Release|x86
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Debug|x86.Build.0 = Debug|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Release|x86.ActiveCfg = Release|Any CPU
+		{6A71627C-FCC3-44B1-8206-9D5057684759}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

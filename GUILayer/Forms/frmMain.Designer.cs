@@ -62,6 +62,14 @@
             this.availableShowsGrid = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnRefreshShowList = new System.Windows.Forms.Button();
+            this.lblShowDirectory = new System.Windows.Forms.Label();
+            this.lblShowDirectoryHeader = new System.Windows.Forms.Label();
+            this.tbDebug = new System.Windows.Forms.TextBox();
+            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
+            this.indicatorSourceMSE = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
+            this.lblSourceMSE = new System.Windows.Forms.Label();
+            this.indicatorDestinationMSE = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
+            this.lblDestinationMSE = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.gbTime.SuspendLayout();
@@ -76,7 +84,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(774, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(371, 24);
             this.menuStrip1.TabIndex = 48;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -129,9 +137,9 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 384);
+            this.statusStrip.Location = new System.Drawing.Point(0, 646);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(774, 22);
+            this.statusStrip.Size = new System.Drawing.Size(371, 22);
             this.statusStrip.TabIndex = 53;
             this.statusStrip.Text = "statusStrip";
             // 
@@ -147,7 +155,7 @@
             // 
             this.lblCurrentShow.AutoSize = true;
             this.lblCurrentShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCurrentShow.Location = new System.Drawing.Point(390, 44);
+            this.lblCurrentShow.Location = new System.Drawing.Point(131, 109);
             this.lblCurrentShow.Name = "lblCurrentShow";
             this.lblCurrentShow.Size = new System.Drawing.Size(34, 16);
             this.lblCurrentShow.TabIndex = 86;
@@ -157,7 +165,7 @@
             // 
             this.lblCurrentShowHeader.AutoSize = true;
             this.lblCurrentShowHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCurrentShowHeader.Location = new System.Drawing.Point(278, 44);
+            this.lblCurrentShowHeader.Location = new System.Drawing.Point(19, 109);
             this.lblCurrentShowHeader.Name = "lblCurrentShowHeader";
             this.lblCurrentShowHeader.Size = new System.Drawing.Size(115, 16);
             this.lblCurrentShowHeader.TabIndex = 85;
@@ -167,7 +175,7 @@
             // 
             this.lblPlaylistNameHeader.AutoSize = true;
             this.lblPlaylistNameHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPlaylistNameHeader.Location = new System.Drawing.Point(536, 44);
+            this.lblPlaylistNameHeader.Location = new System.Drawing.Point(19, 135);
             this.lblPlaylistNameHeader.Name = "lblPlaylistNameHeader";
             this.lblPlaylistNameHeader.Size = new System.Drawing.Size(108, 16);
             this.lblPlaylistNameHeader.TabIndex = 88;
@@ -177,7 +185,7 @@
             // 
             this.lblPlaylistName.AutoSize = true;
             this.lblPlaylistName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPlaylistName.Location = new System.Drawing.Point(641, 44);
+            this.lblPlaylistName.Location = new System.Drawing.Point(131, 135);
             this.lblPlaylistName.Name = "lblPlaylistName";
             this.lblPlaylistName.Size = new System.Drawing.Size(34, 16);
             this.lblPlaylistName.TabIndex = 89;
@@ -258,7 +266,7 @@
             // 
             this.lblIpAddress.AutoSize = true;
             this.lblIpAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIpAddress.Location = new System.Drawing.Point(122, 80);
+            this.lblIpAddress.Location = new System.Drawing.Point(131, 162);
             this.lblIpAddress.Name = "lblIpAddress";
             this.lblIpAddress.Size = new System.Drawing.Size(34, 16);
             this.lblIpAddress.TabIndex = 121;
@@ -268,7 +276,7 @@
             // 
             this.lblHostName.AutoSize = true;
             this.lblHostName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHostName.Location = new System.Drawing.Point(230, 80);
+            this.lblHostName.Location = new System.Drawing.Point(131, 186);
             this.lblHostName.Name = "lblHostName";
             this.lblHostName.Size = new System.Drawing.Size(34, 16);
             this.lblHostName.TabIndex = 122;
@@ -278,7 +286,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(19, 80);
+            this.label3.Location = new System.Drawing.Point(19, 162);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 16);
             this.label3.TabIndex = 123;
@@ -289,11 +297,11 @@
             this.btnSelectShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSelectShow.Image = global::GUILayer.Properties.Resources.StatusAnnotations_Complete_and_ok_16xLG_color;
             this.btnSelectShow.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSelectShow.Location = new System.Drawing.Point(192, 323);
+            this.btnSelectShow.Location = new System.Drawing.Point(165, 441);
             this.btnSelectShow.Name = "btnSelectShow";
-            this.btnSelectShow.Size = new System.Drawing.Size(130, 40);
+            this.btnSelectShow.Size = new System.Drawing.Size(185, 40);
             this.btnSelectShow.TabIndex = 125;
-            this.btnSelectShow.Text = " Select\r\n Show(Ctrl-S)";
+            this.btnSelectShow.Text = " Select/Copy Show (CTRL-S)";
             this.btnSelectShow.UseVisualStyleBackColor = true;
             this.btnSelectShow.Click += new System.EventHandler(this.btnSelectShow_Click);
             // 
@@ -321,7 +329,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.availableShowsGrid.DefaultCellStyle = dataGridViewCellStyle2;
-            this.availableShowsGrid.Location = new System.Drawing.Point(12, 112);
+            this.availableShowsGrid.Location = new System.Drawing.Point(11, 239);
             this.availableShowsGrid.MultiSelect = false;
             this.availableShowsGrid.Name = "availableShowsGrid";
             this.availableShowsGrid.ReadOnly = true;
@@ -337,6 +345,7 @@
             this.availableShowsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.availableShowsGrid.Size = new System.Drawing.Size(339, 196);
             this.availableShowsGrid.TabIndex = 124;
+            this.availableShowsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.availableShowsGrid_CellContentClick);
             // 
             // dataGridViewTextBoxColumn2
             // 
@@ -351,7 +360,7 @@
             this.btnRefreshShowList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefreshShowList.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshShowList.Image")));
             this.btnRefreshShowList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshShowList.Location = new System.Drawing.Point(36, 323);
+            this.btnRefreshShowList.Location = new System.Drawing.Point(11, 441);
             this.btnRefreshShowList.Name = "btnRefreshShowList";
             this.btnRefreshShowList.Size = new System.Drawing.Size(130, 40);
             this.btnRefreshShowList.TabIndex = 126;
@@ -359,12 +368,100 @@
             this.btnRefreshShowList.UseVisualStyleBackColor = true;
             this.btnRefreshShowList.Click += new System.EventHandler(this.btnRefreshShowList_Click);
             // 
+            // lblShowDirectory
+            // 
+            this.lblShowDirectory.AutoSize = true;
+            this.lblShowDirectory.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblShowDirectory.Location = new System.Drawing.Point(131, 82);
+            this.lblShowDirectory.Name = "lblShowDirectory";
+            this.lblShowDirectory.Size = new System.Drawing.Size(34, 16);
+            this.lblShowDirectory.TabIndex = 128;
+            this.lblShowDirectory.Text = "N/A";
+            // 
+            // lblShowDirectoryHeader
+            // 
+            this.lblShowDirectoryHeader.AutoSize = true;
+            this.lblShowDirectoryHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblShowDirectoryHeader.Location = new System.Drawing.Point(19, 82);
+            this.lblShowDirectoryHeader.Name = "lblShowDirectoryHeader";
+            this.lblShowDirectoryHeader.Size = new System.Drawing.Size(116, 16);
+            this.lblShowDirectoryHeader.TabIndex = 127;
+            this.lblShowDirectoryHeader.Text = "Show Directory:";
+            // 
+            // tbDebug
+            // 
+            this.tbDebug.Location = new System.Drawing.Point(12, 515);
+            this.tbDebug.Multiline = true;
+            this.tbDebug.Name = "tbDebug";
+            this.tbDebug.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbDebug.Size = new System.Drawing.Size(338, 116);
+            this.tbDebug.TabIndex = 129;
+            // 
+            // shapeContainer1
+            // 
+            this.shapeContainer1.Location = new System.Drawing.Point(0, 0);
+            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
+            this.shapeContainer1.Name = "shapeContainer1";
+            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
+            this.indicatorDestinationMSE,
+            this.indicatorSourceMSE});
+            this.shapeContainer1.Size = new System.Drawing.Size(371, 668);
+            this.shapeContainer1.TabIndex = 130;
+            this.shapeContainer1.TabStop = false;
+            // 
+            // indicatorSourceMSE
+            // 
+            this.indicatorSourceMSE.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
+            this.indicatorSourceMSE.CornerRadius = 2;
+            this.indicatorSourceMSE.FillColor = System.Drawing.SystemColors.GrayText;
+            this.indicatorSourceMSE.FillGradientColor = System.Drawing.Color.Red;
+            this.indicatorSourceMSE.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
+            this.indicatorSourceMSE.Location = new System.Drawing.Point(119, 208);
+            this.indicatorSourceMSE.Name = "indicatorSourceMSE";
+            this.indicatorSourceMSE.Size = new System.Drawing.Size(19, 19);
+            // 
+            // lblSourceMSE
+            // 
+            this.lblSourceMSE.AutoSize = true;
+            this.lblSourceMSE.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSourceMSE.Location = new System.Drawing.Point(19, 210);
+            this.lblSourceMSE.Name = "lblSourceMSE";
+            this.lblSourceMSE.Size = new System.Drawing.Size(97, 16);
+            this.lblSourceMSE.TabIndex = 131;
+            this.lblSourceMSE.Text = "Source MSE:";
+            // 
+            // indicatorDestinationMSE
+            // 
+            this.indicatorDestinationMSE.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
+            this.indicatorDestinationMSE.CornerRadius = 2;
+            this.indicatorDestinationMSE.FillColor = System.Drawing.SystemColors.GrayText;
+            this.indicatorDestinationMSE.FillGradientColor = System.Drawing.Color.Red;
+            this.indicatorDestinationMSE.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
+            this.indicatorDestinationMSE.Location = new System.Drawing.Point(330, 208);
+            this.indicatorDestinationMSE.Name = "indicatorDestinationMSE";
+            this.indicatorDestinationMSE.Size = new System.Drawing.Size(19, 19);
+            // 
+            // lblDestinationMSE
+            // 
+            this.lblDestinationMSE.AutoSize = true;
+            this.lblDestinationMSE.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDestinationMSE.Location = new System.Drawing.Point(200, 210);
+            this.lblDestinationMSE.Name = "lblDestinationMSE";
+            this.lblDestinationMSE.Size = new System.Drawing.Size(126, 16);
+            this.lblDestinationMSE.TabIndex = 132;
+            this.lblDestinationMSE.Text = "Destination MSE:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.ClientSize = new System.Drawing.Size(774, 406);
+            this.ClientSize = new System.Drawing.Size(371, 668);
+            this.Controls.Add(this.lblDestinationMSE);
+            this.Controls.Add(this.lblSourceMSE);
+            this.Controls.Add(this.tbDebug);
+            this.Controls.Add(this.lblShowDirectory);
+            this.Controls.Add(this.lblShowDirectoryHeader);
             this.Controls.Add(this.btnRefreshShowList);
             this.Controls.Add(this.btnSelectShow);
             this.Controls.Add(this.availableShowsGrid);
@@ -378,10 +475,11 @@
             this.Controls.Add(this.lblCurrentShowHeader);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.shapeContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Election Graphics Stack Builder Application  Version ";
+            this.Text = "Multi-Play Playlist Utility  Version ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.frmMain_Load);
@@ -427,6 +525,14 @@
         private System.Windows.Forms.DataGridView availableShowsGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.Button btnRefreshShowList;
+        private System.Windows.Forms.Label lblShowDirectory;
+        private System.Windows.Forms.Label lblShowDirectoryHeader;
+        private System.Windows.Forms.TextBox tbDebug;
+        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
+        private Microsoft.VisualBasic.PowerPacks.RectangleShape indicatorSourceMSE;
+        private Microsoft.VisualBasic.PowerPacks.RectangleShape indicatorDestinationMSE;
+        private System.Windows.Forms.Label lblSourceMSE;
+        private System.Windows.Forms.Label lblDestinationMSE;
     }
 }
 

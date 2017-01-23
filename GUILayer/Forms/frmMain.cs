@@ -8,10 +8,12 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Drawing;
 using log4net.Appender;
 using LogicLayer.CommonClasses;
 using MSEInterface;
 using MSEInterface.DataModel;
+using AsyncClientSocket;
 // Required for implementing logging to status bar
 
 //
@@ -48,11 +50,14 @@ namespace GUILayer.Forms
         MANAGE_ELEMENTS element = new MANAGE_ELEMENTS();
 
         // Read in MSE settings from config file and set default directories and parameters
-        string mseEndpoint1 = string.Empty;
-        string mseEndpoint2 = string.Empty;
+        string mseIpAddressSource = string.Empty;
+        string mseIpAddressDestination = string.Empty;
+        int msePortRest = 0;
+        int msePortPepTalk = 0;
+        string mseRestEndpointSource = string.Empty;
+        string mseRestEndpointDestination = string.Empty;
         string topLevelShowsDirectoryURI = string.Empty;
         string masterPlaylistsDirectoryURI = string.Empty;
-        string currentShowName = string.Empty;
         string ProducerElementsPlaylistName = string.Empty;
 
         // Read in database connection strings
@@ -62,6 +67,10 @@ namespace GUILayer.Forms
         private BindingList<ShowObject> showNames;
         // The sublist ID to be returned 
         public string selectedShow { get; set; }
+
+        // Declare TCP client sockets for MSE communications
+        public ClientSocket sourceMSEClientSocket;
+        public ClientSocket destinationMSEClientSocket;
 
         #endregion
 
@@ -98,7 +107,7 @@ namespace GUILayer.Forms
         /// <summary>
         /// Main form init, activation and close
         /// </summary>
-        
+
         public frmMain()
         {
             InitializeComponent();
@@ -108,9 +117,6 @@ namespace GUILayer.Forms
                 // Update status
                 toolStripStatusLabel.Text = "Starting program initialization.";
 
-                // Set current show label
-                lblCurrentShow.Text = currentShowName;
-
                 // Enable handling of function keys; setup method for function keys and assign delegate
                 KeyPreview = true;
                 this.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyEvent);
@@ -119,16 +125,16 @@ namespace GUILayer.Forms
 
                 // Make entry into applications log
                 //ApplicationSettingsFlagsAccess applicationSettingsFlagsAccess = new ApplicationSettingsFlagsAccess();
-                string ipAddress = string.Empty;
+                string hostIpAddress = string.Empty;
                 string hostName = string.Empty;
-                ipAddress = HostIPNameFunctions.GetLocalIPAddress();
-                hostName = HostIPNameFunctions.GetHostName(ipAddress);
-                lblIpAddress.Text = ipAddress;
+                hostIpAddress = HostIPNameFunctions.GetLocalIPAddress();
+                hostName = HostIPNameFunctions.GetHostName(hostIpAddress);
+                lblIpAddress.Text = hostIpAddress;
                 lblHostName.Text = hostName; 
 
                 // Set version number
                 var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-                this.Text = String.Format("Election Graphics Stack Builder Application  Version {0}", version);
+                this.Text = String.Format("Multi-Play Playlist Utility  Version {0}", version);
             }
             catch (Exception ex)
             {
@@ -145,19 +151,29 @@ namespace GUILayer.Forms
         // Handler for main form load
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // Read in config settings - default to Media Sequencer #1
-            mseEndpoint1 = Properties.Settings.Default.MSEEndpoint1;
-            mseEndpoint2 = Properties.Settings.Default.MSEEndpoint2;
-            topLevelShowsDirectoryURI = Properties.Settings.Default.MSEEndpoint1 + Properties.Settings.Default.TopLevelShowsDirectory;
-            masterPlaylistsDirectoryURI = Properties.Settings.Default.MSEEndpoint1 + Properties.Settings.Default.MasterPlaylistsDirectory;
-            currentShowName = Properties.Settings.Default.CurrentShowName;
+            // Read in config settings
+            mseIpAddressSource = Properties.Settings.Default.MSEIPAddressSource;
+            mseIpAddressDestination = Properties.Settings.Default.MSEIPAddressDestination;
+            msePortRest = Properties.Settings.Default.MSEPortRest;
+            msePortPepTalk = Properties.Settings.Default.MSEPortPepTalk;
+
+            // Set REST end-points
+            mseRestEndpointSource = "http://" + mseIpAddressSource + ":" + Convert.ToInt32(msePortRest) + "/";
+            mseRestEndpointDestination = "http://" + mseIpAddressDestination + ":" + Convert.ToInt32(msePortRest) + "/";
+
+            // Read in show & playlist info
+            topLevelShowsDirectoryURI = mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectory;
+            masterPlaylistsDirectoryURI = mseRestEndpointSource + Properties.Settings.Default.MasterPlaylistsDirectory;
             ProducerElementsPlaylistName = Properties.Settings.Default.ProducerElementsPlaylistName;
+
+            // Set show directory & playlist name labels
+            lblShowDirectory.Text = Properties.Settings.Default.TopLevelShowsDirectory;
+            lblPlaylistName.Text = ProducerElementsPlaylistName;
 
             // Populate grid/list of shows
             // Gets the URI's for available shows
             MANAGE_SHOWS getShowList = new MANAGE_SHOWS();
-
-            showNames = getShowList.GetListOfShows(mseEndpoint1 + Properties.Settings.Default.TopLevelShowsDirectory);
+            showNames = getShowList.GetListOfShows(mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectory);
 
             // Setup the available stacks grid
             availableShowsGrid.AutoGenerateColumns = false;
@@ -195,6 +211,64 @@ namespace GUILayer.Forms
             // Log application quit
             log.Info("Quitting Multi-Play Playlist Utility");
         }
+        #endregion
+
+
+        #region MSE PepTalk connection methods
+        // Method to setup the PepTalk connections to the source & destination MSE's
+        public void setupMSEClientSockets()
+        {
+            // Instantiate and setup the client sockets
+            // Establish the remote endpoint for the sockets
+            System.Net.IPAddress mseSourceIpAddress = System.Net.IPAddress.Parse(mseIpAddressSource);
+            System.Net.IPAddress mseDestinationIpAddress = System.Net.IPAddress.Parse(mseIpAddressDestination);
+            sourceMSEClientSocket = new ClientSocket(mseSourceIpAddress, Convert.ToInt32(msePortPepTalk));
+            destinationMSEClientSocket = new ClientSocket(mseDestinationIpAddress, Convert.ToInt32(msePortPepTalk));
+
+            // Initialize the events
+            //sourceMSEClientSocket.DataReceived += Source_MSE_DataReceived;
+            //sourceMSEClientSocket.ConnectionStatusChanged += GraphicsChannel_ConnectionStatusChanged;
+
+            // Connect
+            sourceMSEClientSocket.AutoReconnect = true;
+            sourceMSEClientSocket.Connect();
+            destinationMSEClientSocket.AutoReconnect = true;
+            destinationMSEClientSocket.Connect();
+        }
+
+        // Send graphics channel data - called when graphics channel first instantiated
+        public void SendGraphicsChannelData(String dataString)
+        {
+            // Send the first data
+            //GraphicsChannelClientSocket.Send(dataString);
+        }
+
+        // Handler for data received back from graphics channel
+        public void Source_MSE_DataReceived(ClientSocket sender, object data)
+        {
+            //Interpret the received data object as a string
+
+            //Add the received data to the log - DEBUG ONLY - no current function for returned data
+            //log.Debug("Data received: " + strData);
+        }
+
+        // Handler for graphics channel connection status change
+        public void GraphicsChannel_ConnectionStatusChanged(ClientSocket sender, ClientSocket.ConnectionStatus status)
+        {
+            // Set status
+            if (status == ClientSocket.ConnectionStatus.Connected)
+            {
+                //GraphicsChannelConnected = true;
+            }
+            else
+            {
+                //GraphicsChannelConnected = false;
+            }
+            // Send to log - DEBUG ONLY
+            //log.Debug("Connection Status: " + status.ToString());
+        }
+
+
         #endregion
 
         #region General Form related methods
@@ -249,11 +323,59 @@ namespace GUILayer.Forms
         }
         #endregion
 
-        // Handler for Select Show button
-        private void btnSelectShow_Click(object sender, EventArgs e)
+        #region PepTalk utility functions
+        // Method to do string replace of escape sequences for "{" & "}"
+        private string removeEscapeSequences(string inString)
         {
+            string outString;
+            outString = inString.Replace("%7B", "{").Replace("%7D", "}");
+            return outString;
+        }
+
+        // Method to return byte count for string
+        private int getByteCount (string inString)
+        {
+            return System.Text.ASCIIEncoding.ASCII.GetByteCount(inString);
+        }
+
+        // Method to extract the playlist ID from the complete playlist URI
+        string getPlaylistPathFromURI(string playlistURI)
+        {
+            string playlistPath = string.Empty;
+            int startPos = 0;
+
             try
             {
+                startPos = playlistURI.IndexOf("/element_collection/") + "/element_collection".Length;
+                playlistPath = playlistURI.Substring(startPos);
+                playlistPath = playlistPath.Substring(0, playlistPath.Length - 1);
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                log.Error("Exception occurred while trying to extract Playlist ID: " + ex.Message);
+                log.Debug("Exception occurred while trying to extract Playlist ID", ex);
+            }
+            return playlistPath;
+        }
+        #endregion
+
+
+        // Handler for Select & Copy Show button
+        private void btnSelectShow_Click(object sender, EventArgs e)
+        {
+            // This is where the real work is done. Operations are as follows:
+            // 1. MSE operations
+            //    a. Connect to the source MSE and display available shows
+            //    b. Operator selects desired show to copy from
+            //    c. Get the URI for the specified (fixed name) playlist of the selected show
+            // 2. PepTalk operations
+            //    a. Connect to the source MSE on PepTalk port
+            //    b. Get the XML for the show's playlist
+            //    c. Connect to the destination MSE on PepTalk port
+            //    d. Post the XML using REPLACE command 
+            try
+                {
                 // Set the sublist ID
                 if (showNames.Count > 0)
                 {
@@ -261,25 +383,51 @@ namespace GUILayer.Forms
                     int currentShowIndex = availableShowsGrid.CurrentCell.RowIndex;
                     string ShowName = showNames[currentShowIndex].title.ToString();
 
-                    //DialogResult result1 = MessageBox.Show("Are you sure you want to switch to the new show: " + ShowName + "?", "Confirmation",
-                    //                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    //if (result1 != DialogResult.Yes)
-                    //{
-                    //    return;
-                    //}
-
                     // Set new show name
                     selectedShow = ShowName;
                     lblCurrentShow.Text = selectedShow;
+
+                    // Get the URI to the playlist
+                    // Check for a playlist in the VDOM with the specified name & return the Down link
+                    // Delete the group so it can be re-created
+                    // MSE OPERATION
+                    string playlistAltLink = string.Empty;
+
+                    // Get playlists directory URI based on current show
+                    string showPlaylistsDirectoryURI = show.GetPlaylistDirectoryFromShow(topLevelShowsDirectoryURI, selectedShow);
+
+                    playlistAltLink = playlist.GetPlaylistAltLink(showPlaylistsDirectoryURI, ProducerElementsPlaylistName);
+                    if (playlistAltLink != string.Empty)
+                    {
+                        // Show current show path - DEBUG ONLY
+                        tbDebug.Text = playlistAltLink;
+
+                        // Now, do the PepTalk operations
+                        // Extract the playlist URI from the playlist path; also converts the escaped { & } characters
+                        string playlistPath = getPlaylistPathFromURI(removeEscapeSequences(playlistAltLink));
+                        //tbDebug.Text = playlistId + "\r\n" + Convert.ToString(getByteCount(playlistId));
+
+                        // Frame and send the commands
+                        // Send leading command
+                        string cmd1 = "1 protocol peptalk noevents";
+                        // Send command to get playlist XML
+                        string cmd2 = "2 get {" + Convert.ToString(getByteCount(playlistPath)) + "}" + playlistPath;
+                        tbDebug.Text = cmd1 + "\r\n\r\n" + cmd2;
+                    }
+                    // Log if the URI could not be resolved
+                    else
+                    {
+                        log.Error("Could not resolve Playlist Alt link");
+                        log.Debug("Could not resolve Playlist Alt link");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 // Log error
-                log.Error("Select Show exception occurred: " + ex.Message);
-                log.Debug("Select Show exception occurred", ex);
+                log.Error("Error occurred while trying to select and copy playlist: " + ex.Message);
+                log.Debug("Error occurred while trying to select and copy playlist", ex);
             }
-
         }
 
         // Handler for button to refresh list of shows
@@ -290,12 +438,17 @@ namespace GUILayer.Forms
             // Gets the URI's for available shows
             MANAGE_SHOWS getShowList = new MANAGE_SHOWS();
 
-            showNames = getShowList.GetListOfShows(mseEndpoint1 + Properties.Settings.Default.TopLevelShowsDirectory);
+            showNames = getShowList.GetListOfShows(mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectory);
 
             // Setup the available stacks grid
             availableShowsGrid.AutoGenerateColumns = false;
             var availableShowsGridDataSource = new BindingSource(showNames, null);
             availableShowsGrid.DataSource = availableShowsGridDataSource;
+        }
+
+        private void availableShowsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
