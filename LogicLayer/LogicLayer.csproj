@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\StacksCollection.cs" />
     <Compile Include="CommonClasses\HostIPNameFunctions.cs" />
     <Compile Include="CommonClasses\SortableBindingList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -56,6 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Collections\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

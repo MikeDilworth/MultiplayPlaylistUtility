@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
-using System.Xml;
-using System.IO;
-using System.Collections.Specialized;
 using System.Data;
-using System.Threading.Tasks;
-using DataInterface.DataModel;
-using DataInterface.DataAccess;
-using System.Data.SqlClient;
-using System.ComponentModel;
 
 
 namespace MSEInterface
