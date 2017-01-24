@@ -52,7 +52,7 @@
             this.Question = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rowText = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Subset = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timeLabel = new System.Windows.Forms.Label();
+            this.timeOfDayLabel = new System.Windows.Forms.Label();
             this.timerStatusUpdate = new System.Windows.Forms.Timer(this.components);
             this.gbTime = new System.Windows.Forms.GroupBox();
             this.lblIpAddress = new System.Windows.Forms.Label();
@@ -66,14 +66,17 @@
             this.lblShowDirectoryHeader = new System.Windows.Forms.Label();
             this.tbDebug = new System.Windows.Forms.TextBox();
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
+            this.indicatorDestinationMSE = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
             this.indicatorSourceMSE = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
             this.lblSourceMSE = new System.Windows.Forms.Label();
-            this.indicatorDestinationMSE = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
             this.lblDestinationMSE = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.timeOfLastCopyLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.gbTime.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.availableShowsGrid)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -84,7 +87,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(371, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(574, 24);
             this.menuStrip1.TabIndex = 48;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -137,9 +140,9 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 646);
+            this.statusStrip.Location = new System.Drawing.Point(0, 636);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(371, 22);
+            this.statusStrip.Size = new System.Drawing.Size(574, 22);
             this.statusStrip.TabIndex = 53;
             this.statusStrip.Text = "statusStrip";
             // 
@@ -155,7 +158,7 @@
             // 
             this.lblCurrentShow.AutoSize = true;
             this.lblCurrentShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCurrentShow.Location = new System.Drawing.Point(131, 109);
+            this.lblCurrentShow.Location = new System.Drawing.Point(131, 132);
             this.lblCurrentShow.Name = "lblCurrentShow";
             this.lblCurrentShow.Size = new System.Drawing.Size(34, 16);
             this.lblCurrentShow.TabIndex = 86;
@@ -165,7 +168,7 @@
             // 
             this.lblCurrentShowHeader.AutoSize = true;
             this.lblCurrentShowHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCurrentShowHeader.Location = new System.Drawing.Point(19, 109);
+            this.lblCurrentShowHeader.Location = new System.Drawing.Point(19, 132);
             this.lblCurrentShowHeader.Name = "lblCurrentShowHeader";
             this.lblCurrentShowHeader.Size = new System.Drawing.Size(115, 16);
             this.lblCurrentShowHeader.TabIndex = 85;
@@ -175,7 +178,7 @@
             // 
             this.lblPlaylistNameHeader.AutoSize = true;
             this.lblPlaylistNameHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPlaylistNameHeader.Location = new System.Drawing.Point(19, 135);
+            this.lblPlaylistNameHeader.Location = new System.Drawing.Point(19, 158);
             this.lblPlaylistNameHeader.Name = "lblPlaylistNameHeader";
             this.lblPlaylistNameHeader.Size = new System.Drawing.Size(108, 16);
             this.lblPlaylistNameHeader.TabIndex = 88;
@@ -185,7 +188,7 @@
             // 
             this.lblPlaylistName.AutoSize = true;
             this.lblPlaylistName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPlaylistName.Location = new System.Drawing.Point(131, 135);
+            this.lblPlaylistName.Location = new System.Drawing.Point(131, 158);
             this.lblPlaylistName.Name = "lblPlaylistName";
             this.lblPlaylistName.Size = new System.Drawing.Size(34, 16);
             this.lblPlaylistName.TabIndex = 89;
@@ -233,17 +236,17 @@
             this.Subset.HeaderText = "Subset";
             this.Subset.Name = "Subset";
             // 
-            // timeLabel
+            // timeOfDayLabel
             // 
-            this.timeLabel.BackColor = System.Drawing.Color.Black;
-            this.timeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.timeLabel.ForeColor = System.Drawing.Color.Red;
-            this.timeLabel.Location = new System.Drawing.Point(6, 17);
-            this.timeLabel.Name = "timeLabel";
-            this.timeLabel.Size = new System.Drawing.Size(248, 20);
-            this.timeLabel.TabIndex = 0;
-            this.timeLabel.Text = "Time";
-            this.timeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.timeOfDayLabel.BackColor = System.Drawing.Color.Black;
+            this.timeOfDayLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timeOfDayLabel.ForeColor = System.Drawing.Color.Red;
+            this.timeOfDayLabel.Location = new System.Drawing.Point(6, 17);
+            this.timeOfDayLabel.Name = "timeOfDayLabel";
+            this.timeOfDayLabel.Size = new System.Drawing.Size(248, 20);
+            this.timeOfDayLabel.TabIndex = 0;
+            this.timeOfDayLabel.Text = "--";
+            this.timeOfDayLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timerStatusUpdate
             // 
@@ -252,7 +255,7 @@
             // 
             // gbTime
             // 
-            this.gbTime.Controls.Add(this.timeLabel);
+            this.gbTime.Controls.Add(this.timeOfDayLabel);
             this.gbTime.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.gbTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbTime.Location = new System.Drawing.Point(12, 27);
@@ -260,13 +263,13 @@
             this.gbTime.Size = new System.Drawing.Size(260, 42);
             this.gbTime.TabIndex = 119;
             this.gbTime.TabStop = false;
-            this.gbTime.Text = "CURRENT TIME";
+            this.gbTime.Text = "Current Time";
             // 
             // lblIpAddress
             // 
             this.lblIpAddress.AutoSize = true;
             this.lblIpAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIpAddress.Location = new System.Drawing.Point(131, 162);
+            this.lblIpAddress.Location = new System.Drawing.Point(131, 185);
             this.lblIpAddress.Name = "lblIpAddress";
             this.lblIpAddress.Size = new System.Drawing.Size(34, 16);
             this.lblIpAddress.TabIndex = 121;
@@ -276,7 +279,7 @@
             // 
             this.lblHostName.AutoSize = true;
             this.lblHostName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHostName.Location = new System.Drawing.Point(131, 186);
+            this.lblHostName.Location = new System.Drawing.Point(224, 185);
             this.lblHostName.Name = "lblHostName";
             this.lblHostName.Size = new System.Drawing.Size(34, 16);
             this.lblHostName.TabIndex = 122;
@@ -286,7 +289,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(19, 162);
+            this.label3.Location = new System.Drawing.Point(19, 185);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 16);
             this.label3.TabIndex = 123;
@@ -297,11 +300,11 @@
             this.btnSelectShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSelectShow.Image = global::GUILayer.Properties.Resources.StatusAnnotations_Complete_and_ok_16xLG_color;
             this.btnSelectShow.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSelectShow.Location = new System.Drawing.Point(165, 441);
+            this.btnSelectShow.Location = new System.Drawing.Point(376, 307);
             this.btnSelectShow.Name = "btnSelectShow";
-            this.btnSelectShow.Size = new System.Drawing.Size(185, 40);
+            this.btnSelectShow.Size = new System.Drawing.Size(185, 99);
             this.btnSelectShow.TabIndex = 125;
-            this.btnSelectShow.Text = " Select/Copy Show (CTRL-S)";
+            this.btnSelectShow.Text = " Select/Copy Show";
             this.btnSelectShow.UseVisualStyleBackColor = true;
             this.btnSelectShow.Click += new System.EventHandler(this.btnSelectShow_Click);
             // 
@@ -329,7 +332,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.availableShowsGrid.DefaultCellStyle = dataGridViewCellStyle2;
-            this.availableShowsGrid.Location = new System.Drawing.Point(11, 239);
+            this.availableShowsGrid.Location = new System.Drawing.Point(12, 210);
             this.availableShowsGrid.MultiSelect = false;
             this.availableShowsGrid.Name = "availableShowsGrid";
             this.availableShowsGrid.ReadOnly = true;
@@ -343,9 +346,10 @@
             this.availableShowsGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.availableShowsGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.availableShowsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.availableShowsGrid.Size = new System.Drawing.Size(339, 196);
+            this.availableShowsGrid.Size = new System.Drawing.Size(349, 196);
             this.availableShowsGrid.TabIndex = 124;
             this.availableShowsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.availableShowsGrid_CellContentClick);
+            this.availableShowsGrid.DoubleClick += new System.EventHandler(this.availableShowsGrid_DoubleClick);
             // 
             // dataGridViewTextBoxColumn2
             // 
@@ -360,9 +364,9 @@
             this.btnRefreshShowList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefreshShowList.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshShowList.Image")));
             this.btnRefreshShowList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshShowList.Location = new System.Drawing.Point(11, 441);
+            this.btnRefreshShowList.Location = new System.Drawing.Point(376, 237);
             this.btnRefreshShowList.Name = "btnRefreshShowList";
-            this.btnRefreshShowList.Size = new System.Drawing.Size(130, 40);
+            this.btnRefreshShowList.Size = new System.Drawing.Size(185, 40);
             this.btnRefreshShowList.TabIndex = 126;
             this.btnRefreshShowList.Text = "Refresh";
             this.btnRefreshShowList.UseVisualStyleBackColor = true;
@@ -372,7 +376,7 @@
             // 
             this.lblShowDirectory.AutoSize = true;
             this.lblShowDirectory.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShowDirectory.Location = new System.Drawing.Point(131, 82);
+            this.lblShowDirectory.Location = new System.Drawing.Point(131, 105);
             this.lblShowDirectory.Name = "lblShowDirectory";
             this.lblShowDirectory.Size = new System.Drawing.Size(34, 16);
             this.lblShowDirectory.TabIndex = 128;
@@ -382,7 +386,7 @@
             // 
             this.lblShowDirectoryHeader.AutoSize = true;
             this.lblShowDirectoryHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShowDirectoryHeader.Location = new System.Drawing.Point(19, 82);
+            this.lblShowDirectoryHeader.Location = new System.Drawing.Point(19, 105);
             this.lblShowDirectoryHeader.Name = "lblShowDirectoryHeader";
             this.lblShowDirectoryHeader.Size = new System.Drawing.Size(116, 16);
             this.lblShowDirectoryHeader.TabIndex = 127;
@@ -390,11 +394,11 @@
             // 
             // tbDebug
             // 
-            this.tbDebug.Location = new System.Drawing.Point(12, 515);
+            this.tbDebug.Location = new System.Drawing.Point(13, 412);
             this.tbDebug.Multiline = true;
             this.tbDebug.Name = "tbDebug";
             this.tbDebug.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbDebug.Size = new System.Drawing.Size(338, 116);
+            this.tbDebug.Size = new System.Drawing.Size(549, 215);
             this.tbDebug.TabIndex = 129;
             // 
             // shapeContainer1
@@ -405,18 +409,29 @@
             this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
             this.indicatorDestinationMSE,
             this.indicatorSourceMSE});
-            this.shapeContainer1.Size = new System.Drawing.Size(371, 668);
+            this.shapeContainer1.Size = new System.Drawing.Size(574, 658);
             this.shapeContainer1.TabIndex = 130;
             this.shapeContainer1.TabStop = false;
+            // 
+            // indicatorDestinationMSE
+            // 
+            this.indicatorDestinationMSE.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
+            this.indicatorDestinationMSE.CornerRadius = 2;
+            this.indicatorDestinationMSE.FillColor = System.Drawing.Color.Gray;
+            this.indicatorDestinationMSE.FillGradientColor = System.Drawing.Color.Red;
+            this.indicatorDestinationMSE.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
+            this.indicatorDestinationMSE.Location = new System.Drawing.Point(312, 76);
+            this.indicatorDestinationMSE.Name = "indicatorDestinationMSE";
+            this.indicatorDestinationMSE.Size = new System.Drawing.Size(19, 19);
             // 
             // indicatorSourceMSE
             // 
             this.indicatorSourceMSE.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.indicatorSourceMSE.CornerRadius = 2;
-            this.indicatorSourceMSE.FillColor = System.Drawing.SystemColors.GrayText;
+            this.indicatorSourceMSE.FillColor = System.Drawing.Color.Gray;
             this.indicatorSourceMSE.FillGradientColor = System.Drawing.Color.Red;
             this.indicatorSourceMSE.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
-            this.indicatorSourceMSE.Location = new System.Drawing.Point(119, 208);
+            this.indicatorSourceMSE.Location = new System.Drawing.Point(24, 76);
             this.indicatorSourceMSE.Name = "indicatorSourceMSE";
             this.indicatorSourceMSE.Size = new System.Drawing.Size(19, 19);
             // 
@@ -424,39 +439,53 @@
             // 
             this.lblSourceMSE.AutoSize = true;
             this.lblSourceMSE.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSourceMSE.Location = new System.Drawing.Point(19, 210);
+            this.lblSourceMSE.Location = new System.Drawing.Point(53, 78);
             this.lblSourceMSE.Name = "lblSourceMSE";
-            this.lblSourceMSE.Size = new System.Drawing.Size(97, 16);
+            this.lblSourceMSE.Size = new System.Drawing.Size(93, 16);
             this.lblSourceMSE.TabIndex = 131;
-            this.lblSourceMSE.Text = "Source MSE:";
-            // 
-            // indicatorDestinationMSE
-            // 
-            this.indicatorDestinationMSE.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
-            this.indicatorDestinationMSE.CornerRadius = 2;
-            this.indicatorDestinationMSE.FillColor = System.Drawing.SystemColors.GrayText;
-            this.indicatorDestinationMSE.FillGradientColor = System.Drawing.Color.Red;
-            this.indicatorDestinationMSE.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
-            this.indicatorDestinationMSE.Location = new System.Drawing.Point(330, 208);
-            this.indicatorDestinationMSE.Name = "indicatorDestinationMSE";
-            this.indicatorDestinationMSE.Size = new System.Drawing.Size(19, 19);
+            this.lblSourceMSE.Text = "Source MSE";
             // 
             // lblDestinationMSE
             // 
             this.lblDestinationMSE.AutoSize = true;
             this.lblDestinationMSE.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDestinationMSE.Location = new System.Drawing.Point(200, 210);
+            this.lblDestinationMSE.Location = new System.Drawing.Point(344, 78);
             this.lblDestinationMSE.Name = "lblDestinationMSE";
-            this.lblDestinationMSE.Size = new System.Drawing.Size(126, 16);
+            this.lblDestinationMSE.Size = new System.Drawing.Size(122, 16);
             this.lblDestinationMSE.TabIndex = 132;
-            this.lblDestinationMSE.Text = "Destination MSE:";
+            this.lblDestinationMSE.Text = "Destination MSE";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.timeOfLastCopyLabel);
+            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(301, 27);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(260, 42);
+            this.groupBox1.TabIndex = 133;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Time of Last Copy";
+            // 
+            // timeOfLastCopyLabel
+            // 
+            this.timeOfLastCopyLabel.BackColor = System.Drawing.Color.Black;
+            this.timeOfLastCopyLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timeOfLastCopyLabel.ForeColor = System.Drawing.Color.Red;
+            this.timeOfLastCopyLabel.Location = new System.Drawing.Point(6, 17);
+            this.timeOfLastCopyLabel.Name = "timeOfLastCopyLabel";
+            this.timeOfLastCopyLabel.Size = new System.Drawing.Size(248, 20);
+            this.timeOfLastCopyLabel.TabIndex = 0;
+            this.timeOfLastCopyLabel.Text = "--";
+            this.timeOfLastCopyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.ClientSize = new System.Drawing.Size(371, 668);
+            this.ClientSize = new System.Drawing.Size(574, 658);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lblDestinationMSE);
             this.Controls.Add(this.lblSourceMSE);
             this.Controls.Add(this.tbDebug);
@@ -489,6 +518,7 @@
             this.statusStrip.PerformLayout();
             this.gbTime.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.availableShowsGrid)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -515,7 +545,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Question;
         private System.Windows.Forms.DataGridViewTextBoxColumn rowText;
         private System.Windows.Forms.DataGridViewTextBoxColumn Subset;
-        private System.Windows.Forms.Label timeLabel;
+        private System.Windows.Forms.Label timeOfDayLabel;
         private System.Windows.Forms.Timer timerStatusUpdate;
         private System.Windows.Forms.GroupBox gbTime;
         private System.Windows.Forms.Label lblIpAddress;
@@ -533,6 +563,8 @@
         private Microsoft.VisualBasic.PowerPacks.RectangleShape indicatorDestinationMSE;
         private System.Windows.Forms.Label lblSourceMSE;
         private System.Windows.Forms.Label lblDestinationMSE;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label timeOfLastCopyLabel;
     }
 }
 

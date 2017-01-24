@@ -6,15 +6,15 @@
       <Value Profile="(Default)">172.21.0.35</Value>
     </Setting>
     <Setting Name="MSEIPAddressDestination" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">127.0.0.1</Value>
+      <Value Profile="(Default)">10.232.15.173</Value>
     </Setting>
     <Setting Name="TopLevelShowsDirectory" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">directory/shows/MULTIPLAY/</Value>
+      <Value Profile="(Default)">directory/shows/FNC/</Value>
     </Setting>
     <Setting Name="MasterPlaylistsDirectory" Type="System.String" Scope="Application">
       <Value Profile="(Default)">directory/playlists/</Value>
     </Setting>
-    <Setting Name="ProducerElementsPlaylistName" Type="System.String" Scope="User">
+    <Setting Name="ProducerElementsPlaylistName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">PRODUCER_ELEMENTS</Value>
     </Setting>
     <Setting Name="ApplicationID" Type="System.Int32" Scope="Application">
@@ -36,7 +36,7 @@
     <Setting Name="MSEPortRest" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">8580</Value>
     </Setting>
-    <Setting Name="MSEPortPepTalk" Type="System.Int32" Scope="User">
+    <Setting Name="MSEPortPepTalk" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">8594</Value>
     </Setting>
   </Settings>

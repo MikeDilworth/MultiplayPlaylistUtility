@@ -34,7 +34,7 @@ namespace GUILayer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.232.15.173")]
         public string MSEIPAddressDestination {
             get {
                 return ((string)(this["MSEIPAddressDestination"]));
@@ -43,7 +43,7 @@ namespace GUILayer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("directory/shows/MULTIPLAY/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("directory/shows/FNC/")]
         public string TopLevelShowsDirectory {
             get {
                 return ((string)(this["TopLevelShowsDirectory"]));
@@ -59,15 +59,12 @@ namespace GUILayer.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("PRODUCER_ELEMENTS")]
         public string ProducerElementsPlaylistName {
             get {
                 return ((string)(this["ProducerElementsPlaylistName"]));
-            }
-            set {
-                this["ProducerElementsPlaylistName"] = value;
             }
         }
         
@@ -118,15 +115,12 @@ namespace GUILayer.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("8594")]
         public int MSEPortPepTalk {
             get {
                 return ((int)(this["MSEPortPepTalk"]));
-            }
-            set {
-                this["MSEPortPepTalk"] = value;
             }
         }
     }
