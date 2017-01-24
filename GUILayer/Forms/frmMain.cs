@@ -550,7 +550,9 @@ namespace GUILayer.Forms
             switch (e.KeyCode)
             {
                 case Keys.F1:
-                    //rbPresident.Checked = true;
+                    // Call method to initiate copy of data from source to destination. Method sends request for data to source MSE. 
+                    // Once callback for data received is hit, the data is formatted and sent to the destination MSE.
+                    copyPlaylistXMLSourceToDestination();
                     break;
             }
         }
