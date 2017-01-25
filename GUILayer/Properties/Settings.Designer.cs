@@ -89,8 +89,8 @@ namespace GUILayer.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=enygdb;Initial Catalog=VizMultiPlayStackData;Persist Security Info=Tr" +
-            "ue;User ID=gfxuser;Password=elect2014")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=FNC-SQL-PRI;Initial Catalog=VizMultiPlayMSELogs;Persist Security Info" +
+            "=True;User ID=sa;Password=Engineer@1")]
         public string LoggingDBConnectionString {
             get {
                 return ((string)(this["LoggingDBConnectionString"]));

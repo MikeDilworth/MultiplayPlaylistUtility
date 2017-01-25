@@ -12,6 +12,7 @@ using log4net.Appender;
 using LogicLayer.CommonClasses;
 using MSEInterface;
 using MSEInterface.DataModel;
+using DataInterface.DataAccess;
 using AsyncClientSocket;
 // Required for implementing logging to status bar
 
@@ -63,6 +64,8 @@ namespace GUILayer.Forms
 
         // Read in database connection strings
         string LoggingDBConnectionString = Properties.Settings.Default.LoggingDBConnectionString;
+        string hostIpAddress = string.Empty;
+        string hostName = string.Empty;
 
         // Define the binding list object for the list of available shows
         private BindingList<ShowObject> showNames;
@@ -181,8 +184,6 @@ namespace GUILayer.Forms
                 availableShowsGrid.DataSource = availableShowsGridDataSource;
 
                 // Display host name and IP address
-                string hostIpAddress = string.Empty;
-                string hostName = string.Empty;
                 hostIpAddress = HostIPNameFunctions.GetLocalIPAddress();
                 hostName = HostIPNameFunctions.GetHostName(hostIpAddress);
                 lblIpAddress.Text = hostIpAddress;
@@ -473,6 +474,22 @@ namespace GUILayer.Forms
                 {
                     this.tbDebug.Text = this.tbDebug.Text + "\r\n\r\n" + playlistXMLReceived + "\r\n\r\n" + cmd2;
                 }
+
+                // Post application log entry
+                ApplicationLogsAccess applicationLogsAccess = new ApplicationLogsAccess();
+                applicationLogsAccess.DBConnectionString = LoggingDBConnectionString;
+                applicationLogsAccess.PostApplicationLogEntry(
+                    Properties.Settings.Default.ApplicationName,
+                    Properties.Settings.Default.ApplicationName,
+                    hostName,
+                    hostIpAddress,
+                    mseIpAddressSource,
+                    mseIpAddressDestination,
+                    "Copied playlist XML payload",
+                    "Show/Playlist Path: " + Properties.Settings.Default.TopLevelShowsDirectory + ProducerElementsPlaylistName,
+                    System.DateTime.Now
+                );
+
             }
             catch (Exception ex)
             {
