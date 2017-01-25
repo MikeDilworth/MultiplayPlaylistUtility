@@ -76,6 +76,9 @@ namespace GUILayer.Forms
         // Global for storing the playlist path - used to push to destination MSE
         string playlistPath = string.Empty;
 
+        // For debug
+        bool showDebugWindow = false;
+
         #endregion
 
         #region Logger instantiation - uses reflection to get module name
@@ -127,15 +130,6 @@ namespace GUILayer.Forms
 
                 timerStatusUpdate.Enabled = true;
 
-                // Make entry into applications log
-                //ApplicationSettingsFlagsAccess applicationSettingsFlagsAccess = new ApplicationSettingsFlagsAccess();
-                string hostIpAddress = string.Empty;
-                string hostName = string.Empty;
-                hostIpAddress = HostIPNameFunctions.GetLocalIPAddress();
-                hostName = HostIPNameFunctions.GetHostName(hostIpAddress);
-                lblIpAddress.Text = hostIpAddress;
-                lblHostName.Text = hostName; 
-
                 // Set version number
                 var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
                 this.Text = String.Format("Multi-Play Playlist Utility  Version {0}", version);
@@ -186,11 +180,19 @@ namespace GUILayer.Forms
                 var availableShowsGridDataSource = new BindingSource(showNames, null);
                 availableShowsGrid.DataSource = availableShowsGridDataSource;
 
+                // Display host name and IP address
+                string hostIpAddress = string.Empty;
+                string hostName = string.Empty;
+                hostIpAddress = HostIPNameFunctions.GetLocalIPAddress();
+                hostName = HostIPNameFunctions.GetHostName(hostIpAddress);
+                lblIpAddress.Text = hostIpAddress;
+                lblHostName.Text = hostName;
+
                 // Call method to setup connections to source & destination MSE's
                 setupMSEClientSockets();
 
                 // Log application start
-                log.Info("Starting Stack Builder application");
+                log.Info("Starting Multi-Play Playlist utility");
             }
             catch (Exception ex)
             {
@@ -265,7 +267,10 @@ namespace GUILayer.Forms
                     if (playlistAltLink != string.Empty)
                     {
                         // Show current show path - DEBUG ONLY
-                        tbDebug.Text = playlistAltLink;
+                        if (showDebugWindow)
+                        {
+                            tbDebug.Text = playlistAltLink;
+                        }
 
                         // Now, do the PepTalk operations
                         // Extract the playlist URI from the playlist path; also converts the escaped { & } characters
@@ -279,16 +284,26 @@ namespace GUILayer.Forms
                         {
                             sourceMSESendCommand(cmd1);
                         }
+
                         // Send command to get playlist XML
                         string cmd2 = "2 get {" + Convert.ToString(getByteCount(playlistPath)) + "}" + playlistPath;
-                        if (mseConnectedDestination)
+                        if (mseConnectedSource)
                         {
                             sourceMSESendCommand(cmd2);
+
+                            if (showDebugWindow)
+                            {
+                                tbDebug.Text = cmd1 + "\r\n\r\n" + cmd2;
+                            }
                         }
-                        tbDebug.Text = cmd1 + "\r\n\r\n" + cmd2;
 
                         // Update time label
                         timeOfLastCopyLabel.Text = String.Format("{0:h:mm:ss tt  MMM dd, yyyy}", DateTime.Now);
+
+                        // Upate status bar
+                        toolStripStatusLabel.BackColor = System.Drawing.Color.SpringGreen;
+                        toolStripStatusLabel.Text = "Playlist successfully copied from source MSE to destination MSE @" + 
+                            String.Format("{0:h:mm:ss tt  MMM dd, yyyy}", DateTime.Now);
                     }
                     // Log if the URI could not be resolved
                     else
@@ -303,6 +318,10 @@ namespace GUILayer.Forms
                 // Log error
                 log.Error("Error occurred while trying to select and copy playlist: " + ex.Message);
                 log.Debug("Error occurred while trying to select and copy playlist", ex);
+
+                // Upate status bar
+                toolStripStatusLabel.BackColor = System.Drawing.Color.Red;
+                toolStripStatusLabel.Text = "Error occurred while trying to copy playlist from source MSE to destination MSE";
             }
         }
         #endregion
@@ -356,7 +375,7 @@ namespace GUILayer.Forms
                 mseConnectedSource = false;
             }
             // Send to log - DEBUG ONLY
-            log.Debug("Connection Status: " + status.ToString());
+            log.Debug("Source MSE Connection Status: " + status.ToString());
         }
 
         public void destinationMSEConnectionStatusChanged(ClientSocket sender, ClientSocket.ConnectionStatus status)
@@ -371,7 +390,7 @@ namespace GUILayer.Forms
                 mseConnectedDestination = false;
             }
             // Send to log - DEBUG ONLY
-            log.Debug("Connection Status: " + status.ToString());
+            log.Debug("Destination MSE Connection Status: " + status.ToString());
         }
 
         // Send a command to the source MSE
@@ -380,7 +399,9 @@ namespace GUILayer.Forms
             try
             {
                 // Send the data; terminiate with CRLF
-                sourceMSEClientSocket.Send(dataString + "\r\n");
+                sourceMSEClientSocket.Send(dataString + "\n");
+                // Log if debug mode
+                log.Debug("Command sent to source MSE: " + dataString);
             }
             catch (Exception ex)
             {
@@ -396,7 +417,9 @@ namespace GUILayer.Forms
             try
             {
                 // Send the data
-                destinationMSEClientSocket.Send(dataString + "\r\n");
+                destinationMSEClientSocket.Send(dataString + "\n");
+                // Log if debug mode
+                log.Debug("Command sent to destination MSE: " + dataString);
             }
             catch (Exception ex)
             {
@@ -416,28 +439,39 @@ namespace GUILayer.Forms
         {
             try
             {
+                // Send protocol command
+                string cmd1 = "1 protocol peptalk noevents";
+                if (mseConnectedDestination)
+                {
+                    destinationMSESendCommand(cmd1);
+                }
+
                 // Strip off first part of response from source MSE e.g. 2 get {102}; look for first right-hand curly bracket
+                playlistXMLReceived = playlistXMLReceived.Trim();
                 int startPos = playlistXMLReceived.IndexOf("}");
                 playlistXMLReceived = playlistXMLReceived.Substring(startPos + 1);
 
                 // Append path to playlist then space as field delimiter; last processed playlist path is stored in a global variable
-                string cmd = "2 replace {" + Convert.ToString(getByteCount(playlistPath)) + "}" + playlistPath + " ";
+                string cmd2 = "2 replace {" + Convert.ToString(getByteCount(playlistPath)) + "}" + playlistPath + " ";
                 // Now, append XML payload preceded by byte count
-                cmd = cmd + "{" + Convert.ToString(getByteCount(playlistXMLReceived)) + "}" + playlistXMLReceived;
+                cmd2 = cmd2 + "{" + Convert.ToString(getByteCount(playlistXMLReceived)) + "}" + playlistXMLReceived;
                 // Send the payload to the destination MSE
-                destinationMSESendCommand(cmd);
+                if (mseConnectedDestination)
+                {
+                    destinationMSESendCommand(cmd2);
+                }
 
                 // Set the debug text
                 // InvokeRequired required compares the thread ID of the calling thread to the thread ID of the creating thread.
                 // If these threads are different, it returns true.
-                if (this.tbDebug.InvokeRequired)
+                if ((this.tbDebug.InvokeRequired) && (showDebugWindow))
                 {
                     sendPayloadCallback d = new sendPayloadCallback(sendPayload);
-                    this.Invoke(d, new object[] { this.tbDebug.Text + "\r\n\r\n" + playlistXMLReceived + "\r\n\r\n" + cmd });
+                    this.Invoke(d, new object[] { this.tbDebug.Text + "\r\n\r\n" + playlistXMLReceived + "\r\n\r\n" + cmd2 });
                 }
-                else
+                else if (showDebugWindow)
                 {
-                    this.tbDebug.Text = this.tbDebug.Text + "\r\n\r\n" + playlistXMLReceived + "\r\n\r\n" + cmd;
+                    this.tbDebug.Text = this.tbDebug.Text + "\r\n\r\n" + playlistXMLReceived + "\r\n\r\n" + cmd2;
                 }
             }
             catch (Exception ex)
@@ -453,6 +487,8 @@ namespace GUILayer.Forms
         {
             // Make thread-safe call to format and send the data to the destination MSE
             this.sendPayload(data.ToString());
+            // Log if debug mode
+            log.Debug("Command data received from source MSE: " + data);
         }
 
         // This delegate enables asynchronous calls for setting the text for the debug textbox; shows status info received from
@@ -466,12 +502,12 @@ namespace GUILayer.Forms
             // Set the debug text
             // InvokeRequired required compares the thread ID of the calling thread to the thread ID of the creating thread.
             // If these threads are different, it returns true.
-            if (this.tbDebug.InvokeRequired)
+            if ((this.tbDebug.InvokeRequired) && (showDebugWindow))
             {
                 setTextCallback d = new setTextCallback(setText);
                 this.Invoke(d, new object[] { this.tbDebug.Text + text + "\r\n\r\n" });
             }
-            else
+            else if (showDebugWindow)
             {
                 this.tbDebug.Text = this.tbDebug.Text + "\r\n\r\n" + text;
             }
@@ -481,9 +517,9 @@ namespace GUILayer.Forms
         public void destinationMSEDataReceived(ClientSocket sender, object data)
         {
             //Interpret the received data object as a string & post to debug textbox
-            //setText(data.ToString());
+            setText(data.ToString());
             //Add the received data to the log - DEBUG ONLY
-            //log.Debug("Data received - Destination PepTalk client socket: " + data.ToString());
+            log.Debug("Data received - Destination PepTalk client socket: " + data.ToString());
         }
         #endregion
 

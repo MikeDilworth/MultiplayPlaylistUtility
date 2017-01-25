@@ -24,7 +24,10 @@ namespace LogicLayer.CommonClasses
                         ipAddress = ip.ToString();
                     }
                 }
-                throw new Exception("Local IP Address Not Found!");
+                if (ipAddress == string.Empty)
+                {
+                    throw new Exception("Local IP Address Not Found!");
+                }
             }
             catch (Exception ex)
             {

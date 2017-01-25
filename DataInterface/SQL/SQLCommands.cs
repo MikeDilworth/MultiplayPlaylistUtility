@@ -19,21 +19,15 @@
         /// <summary>
         /// Sql to make an entry in the applications log
         /// </summary>
-        public static readonly string sqlSetFGEApplicationLogEntry = "setFGEApplicationLogEntry " +
+        public static readonly string sqlSetMSELogEntry = "setMSECopyLogEntry " +
                                                                        "@Application_Name, " +
                                                                        "@Application_Description, " +
                                                                        "@HostPC_Name, " +
                                                                        "@HostPC_IP_Address, " +
-                                                                       "@Engine_Enabled_1, " +
-                                                                       "@Engine_IP_Address_1, " +
-                                                                       "@Engine_Enabled_2, " +
-                                                                       "@Engine_IP_Address_2, " +
+                                                                       "@Source_MSE_IP_Address, " +
+                                                                       "@Destination_MSE_IP_Address, " +
                                                                        "@Entry_Text, " +
-                                                                       "@Application_Version, " +
-                                                                       "@Application_ID, " + 
                                                                        "@Comments, " + 
                                                                        "@CurrentSystemTime";
-
-
     }
 }
