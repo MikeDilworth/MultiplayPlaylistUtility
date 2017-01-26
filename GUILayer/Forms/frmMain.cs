@@ -480,7 +480,7 @@ namespace GUILayer.Forms
                 applicationLogsAccess.DBConnectionString = LoggingDBConnectionString;
                 applicationLogsAccess.PostApplicationLogEntry(
                     Properties.Settings.Default.ApplicationName,
-                    Properties.Settings.Default.ApplicationName,
+                    "Copies XML payload for specified show/playlist from source MSE to destination MSE",
                     hostName,
                     hostIpAddress,
                     mseIpAddressSource,
@@ -535,7 +535,12 @@ namespace GUILayer.Forms
         {
             //Interpret the received data object as a string & post to debug textbox
             setText(data.ToString());
-            //Add the received data to the log - DEBUG ONLY
+            // Log error
+            if (data.ToString().IndexOf("error") > -1)
+            {
+                log.Error("Error message received from Destination PepTalk client socket: " + data.ToString());
+            }
+            // Add the received data to the log - DEBUG ONLY
             log.Debug("Data received - Destination PepTalk client socket: " + data.ToString());
         }
         #endregion
