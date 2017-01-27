@@ -44,27 +44,27 @@ namespace GUILayer.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("directory/shows/FNC/")]
-        public string TopLevelShowsDirectory {
+        public string TopLevelShowsDirectoryFNC {
             get {
-                return ((string)(this["TopLevelShowsDirectory"]));
+                return ((string)(this["TopLevelShowsDirectoryFNC"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("directory/playlists/")]
-        public string MasterPlaylistsDirectory {
+        public string MasterPlaylistsDirectoryFNC {
             get {
-                return ((string)(this["MasterPlaylistsDirectory"]));
+                return ((string)(this["MasterPlaylistsDirectoryFNC"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("PRODUCER_ELEMENTS")]
-        public string ProducerElementsPlaylistName {
+        public string ProducerElementsPlaylistNameFNC {
             get {
-                return ((string)(this["ProducerElementsPlaylistName"]));
+                return ((string)(this["ProducerElementsPlaylistNameFNC"]));
             }
         }
         
@@ -121,6 +121,45 @@ namespace GUILayer.Properties {
         public int MSEPortPepTalk {
             get {
                 return ((int)(this["MSEPortPepTalk"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("directory/shows/FBN/")]
+        public string TopLevelShowsDirectoryFBN {
+            get {
+                return ((string)(this["TopLevelShowsDirectoryFBN"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PRODUCER_ELEMENTS")]
+        public string ProducerElementsPlaylistNameFBN {
+            get {
+                return ((string)(this["ProducerElementsPlaylistNameFBN"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("directory/playlists/")]
+        public string MasterPlaylistsDirectoryFBN {
+            get {
+                return ((string)(this["MasterPlaylistsDirectoryFBN"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("FNC")]
+        public string NetworkSelection {
+            get {
+                return ((string)(this["NetworkSelection"]));
+            }
+            set {
+                this["NetworkSelection"] = value;
             }
         }
     }

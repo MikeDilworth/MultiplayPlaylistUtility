@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.programToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,6 +72,9 @@
             this.lblDestinationMSE = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.timeOfLastCopyLabel = new System.Windows.Forms.Label();
+            this.rbSelectFNC = new System.Windows.Forms.RadioButton();
+            this.rbSelectFBN = new System.Windows.Forms.RadioButton();
+            this.lblNetworkSelect = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.gbTime.SuspendLayout();
@@ -140,7 +143,7 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 414);
+            this.statusStrip.Location = new System.Drawing.Point(0, 442);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(577, 22);
             this.statusStrip.TabIndex = 53;
@@ -158,7 +161,7 @@
             // 
             this.lblCurrentShow.AutoSize = true;
             this.lblCurrentShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCurrentShow.Location = new System.Drawing.Point(131, 132);
+            this.lblCurrentShow.Location = new System.Drawing.Point(133, 160);
             this.lblCurrentShow.Name = "lblCurrentShow";
             this.lblCurrentShow.Size = new System.Drawing.Size(34, 16);
             this.lblCurrentShow.TabIndex = 86;
@@ -168,7 +171,7 @@
             // 
             this.lblCurrentShowHeader.AutoSize = true;
             this.lblCurrentShowHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCurrentShowHeader.Location = new System.Drawing.Point(19, 132);
+            this.lblCurrentShowHeader.Location = new System.Drawing.Point(20, 160);
             this.lblCurrentShowHeader.Name = "lblCurrentShowHeader";
             this.lblCurrentShowHeader.Size = new System.Drawing.Size(115, 16);
             this.lblCurrentShowHeader.TabIndex = 85;
@@ -178,7 +181,7 @@
             // 
             this.lblPlaylistNameHeader.AutoSize = true;
             this.lblPlaylistNameHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPlaylistNameHeader.Location = new System.Drawing.Point(19, 158);
+            this.lblPlaylistNameHeader.Location = new System.Drawing.Point(20, 186);
             this.lblPlaylistNameHeader.Name = "lblPlaylistNameHeader";
             this.lblPlaylistNameHeader.Size = new System.Drawing.Size(108, 16);
             this.lblPlaylistNameHeader.TabIndex = 88;
@@ -188,7 +191,7 @@
             // 
             this.lblPlaylistName.AutoSize = true;
             this.lblPlaylistName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPlaylistName.Location = new System.Drawing.Point(131, 158);
+            this.lblPlaylistName.Location = new System.Drawing.Point(133, 186);
             this.lblPlaylistName.Name = "lblPlaylistName";
             this.lblPlaylistName.Size = new System.Drawing.Size(34, 16);
             this.lblPlaylistName.TabIndex = 89;
@@ -269,7 +272,7 @@
             // 
             this.lblIpAddress.AutoSize = true;
             this.lblIpAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIpAddress.Location = new System.Drawing.Point(131, 185);
+            this.lblIpAddress.Location = new System.Drawing.Point(133, 213);
             this.lblIpAddress.Name = "lblIpAddress";
             this.lblIpAddress.Size = new System.Drawing.Size(34, 16);
             this.lblIpAddress.TabIndex = 121;
@@ -279,7 +282,7 @@
             // 
             this.lblHostName.AutoSize = true;
             this.lblHostName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHostName.Location = new System.Drawing.Point(238, 185);
+            this.lblHostName.Location = new System.Drawing.Point(238, 213);
             this.lblHostName.Name = "lblHostName";
             this.lblHostName.Size = new System.Drawing.Size(34, 16);
             this.lblHostName.TabIndex = 122;
@@ -289,7 +292,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(19, 185);
+            this.label3.Location = new System.Drawing.Point(20, 213);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 16);
             this.label3.TabIndex = 123;
@@ -300,7 +303,7 @@
             this.btnSelectShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSelectShow.Image = global::GUILayer.Properties.Resources.StatusAnnotations_Complete_and_ok_16xLG_color;
             this.btnSelectShow.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSelectShow.Location = new System.Drawing.Point(376, 307);
+            this.btnSelectShow.Location = new System.Drawing.Point(376, 334);
             this.btnSelectShow.Name = "btnSelectShow";
             this.btnSelectShow.Size = new System.Drawing.Size(185, 99);
             this.btnSelectShow.TabIndex = 125;
@@ -313,37 +316,37 @@
             this.availableShowsGrid.AllowUserToAddRows = false;
             this.availableShowsGrid.AllowUserToDeleteRows = false;
             this.availableShowsGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle22.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.availableShowsGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.availableShowsGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.availableShowsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.availableShowsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn2});
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle23.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.availableShowsGrid.DefaultCellStyle = dataGridViewCellStyle23;
-            this.availableShowsGrid.Location = new System.Drawing.Point(12, 210);
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.availableShowsGrid.DefaultCellStyle = dataGridViewCellStyle5;
+            this.availableShowsGrid.Location = new System.Drawing.Point(12, 237);
             this.availableShowsGrid.MultiSelect = false;
             this.availableShowsGrid.Name = "availableShowsGrid";
             this.availableShowsGrid.ReadOnly = true;
-            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle24.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.availableShowsGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.availableShowsGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.availableShowsGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.availableShowsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.availableShowsGrid.Size = new System.Drawing.Size(349, 196);
@@ -376,7 +379,7 @@
             // 
             this.lblShowDirectory.AutoSize = true;
             this.lblShowDirectory.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShowDirectory.Location = new System.Drawing.Point(131, 105);
+            this.lblShowDirectory.Location = new System.Drawing.Point(133, 133);
             this.lblShowDirectory.Name = "lblShowDirectory";
             this.lblShowDirectory.Size = new System.Drawing.Size(34, 16);
             this.lblShowDirectory.TabIndex = 128;
@@ -386,7 +389,7 @@
             // 
             this.lblShowDirectoryHeader.AutoSize = true;
             this.lblShowDirectoryHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShowDirectoryHeader.Location = new System.Drawing.Point(19, 105);
+            this.lblShowDirectoryHeader.Location = new System.Drawing.Point(20, 133);
             this.lblShowDirectoryHeader.Name = "lblShowDirectoryHeader";
             this.lblShowDirectoryHeader.Size = new System.Drawing.Size(116, 16);
             this.lblShowDirectoryHeader.TabIndex = 127;
@@ -394,7 +397,7 @@
             // 
             // tbDebug
             // 
-            this.tbDebug.Location = new System.Drawing.Point(12, 441);
+            this.tbDebug.Location = new System.Drawing.Point(12, 464);
             this.tbDebug.Multiline = true;
             this.tbDebug.Name = "tbDebug";
             this.tbDebug.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -409,7 +412,7 @@
             this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
             this.indicatorDestinationMSE,
             this.indicatorSourceMSE});
-            this.shapeContainer1.Size = new System.Drawing.Size(577, 436);
+            this.shapeContainer1.Size = new System.Drawing.Size(577, 464);
             this.shapeContainer1.TabIndex = 130;
             this.shapeContainer1.TabStop = false;
             // 
@@ -479,12 +482,51 @@
             this.timeOfLastCopyLabel.Text = "--";
             this.timeOfLastCopyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // rbSelectFNC
+            // 
+            this.rbSelectFNC.AutoSize = true;
+            this.rbSelectFNC.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbSelectFNC.Location = new System.Drawing.Point(136, 104);
+            this.rbSelectFNC.Name = "rbSelectFNC";
+            this.rbSelectFNC.Size = new System.Drawing.Size(56, 20);
+            this.rbSelectFNC.TabIndex = 134;
+            this.rbSelectFNC.TabStop = true;
+            this.rbSelectFNC.Text = "FNC";
+            this.rbSelectFNC.UseVisualStyleBackColor = true;
+            this.rbSelectFNC.CheckedChanged += new System.EventHandler(this.rbSelectFNC_CheckedChanged);
+            // 
+            // rbSelectFBN
+            // 
+            this.rbSelectFBN.AutoSize = true;
+            this.rbSelectFBN.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbSelectFBN.Location = new System.Drawing.Point(196, 104);
+            this.rbSelectFBN.Name = "rbSelectFBN";
+            this.rbSelectFBN.Size = new System.Drawing.Size(56, 20);
+            this.rbSelectFBN.TabIndex = 135;
+            this.rbSelectFBN.TabStop = true;
+            this.rbSelectFBN.Text = "FBN";
+            this.rbSelectFBN.UseVisualStyleBackColor = true;
+            this.rbSelectFBN.CheckedChanged += new System.EventHandler(this.rbSelectFBN_CheckedChanged);
+            // 
+            // lblNetworkSelect
+            // 
+            this.lblNetworkSelect.AutoSize = true;
+            this.lblNetworkSelect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNetworkSelect.Location = new System.Drawing.Point(20, 106);
+            this.lblNetworkSelect.Name = "lblNetworkSelect";
+            this.lblNetworkSelect.Size = new System.Drawing.Size(116, 16);
+            this.lblNetworkSelect.TabIndex = 136;
+            this.lblNetworkSelect.Text = "Network Select:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.ClientSize = new System.Drawing.Size(577, 436);
+            this.ClientSize = new System.Drawing.Size(577, 464);
+            this.Controls.Add(this.lblNetworkSelect);
+            this.Controls.Add(this.rbSelectFBN);
+            this.Controls.Add(this.rbSelectFNC);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lblDestinationMSE);
             this.Controls.Add(this.lblSourceMSE);
@@ -565,6 +607,9 @@
         private System.Windows.Forms.Label lblDestinationMSE;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label timeOfLastCopyLabel;
+        private System.Windows.Forms.RadioButton rbSelectFNC;
+        private System.Windows.Forms.RadioButton rbSelectFBN;
+        private System.Windows.Forms.Label lblNetworkSelect;
     }
 }
 

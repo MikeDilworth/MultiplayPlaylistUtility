@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////////////
 // MULTI-PLAY PLAYLIST UTILITY - MAIN APPLICATION FORM
 // Version 1.0.0
-// M. Dilworth  Rev: 01/17/2017
+// M. Dilworth  Rev: 01/26/2017
 //////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -14,13 +14,6 @@ using MSEInterface;
 using MSEInterface.DataModel;
 using DataInterface.DataAccess;
 using AsyncClientSocket;
-// Required for implementing logging to status bar
-
-//
-// NOTES:
-//
-// 1. Code modified 8/17/2016 to use new approach provided by Viz for managing groups and elements within groups.
-//
 
 namespace GUILayer.Forms
 {
@@ -56,11 +49,18 @@ namespace GUILayer.Forms
         int msePortPepTalk = 0;
         string mseRestEndpointSource = string.Empty;
         string mseRestEndpointDestination = string.Empty;
-        string topLevelShowsDirectoryURI = string.Empty;
-        string masterPlaylistsDirectoryURI = string.Empty;
-        string ProducerElementsPlaylistName = string.Empty;
+        string topLevelShowsDirectoryURIFNC = string.Empty;
+        string topLevelShowsDirectoryURIFBN = string.Empty;
+        string topLevelShowsDirectoryURIActive = string.Empty;
+        string masterPlaylistsDirectoryURIFNC = string.Empty;
+        string masterPlaylistsDirectoryURIFBN = string.Empty;
+        string masterPlaylistsDirectoryURIActive = string.Empty;
+        string ProducerElementsPlaylistNameFNC = string.Empty;
+        string ProducerElementsPlaylistNameFBN = string.Empty;
+        string ProducerElementsPlaylistNameActive = string.Empty;
         bool mseConnectedSource = false;
         bool mseConnectedDestination = false;
+        string networkSelection = string.Empty;
 
         // Read in database connection strings
         string LoggingDBConnectionString = Properties.Settings.Default.LoggingDBConnectionString;
@@ -93,15 +93,15 @@ namespace GUILayer.Forms
         public void DoAppend(log4net.Core.LoggingEvent loggingEvent)
         {
             // Set text on status bar only if logging level is DEBUG or ERROR
-            if ((loggingEvent.Level.Name == "ERROR") | (loggingEvent.Level.Name == "DEBUG"))
+            if (loggingEvent.Level.Name == "ERROR")
             {
-                toolStripStatusLabel.BackColor = System.Drawing.Color.Red;
-                toolStripStatusLabel.Text = String.Format("Error Logging Message: {0}: {1}", loggingEvent.Level.Name, loggingEvent.MessageObject.ToString());
+                //toolStripStatusLabel.BackColor = System.Drawing.Color.Red;
+                //toolStripStatusLabel.Text = String.Format("Error Logging Message: {0}: {1}", loggingEvent.Level.Name, loggingEvent.MessageObject.ToString());
             }
             else
             {
-                toolStripStatusLabel.BackColor = System.Drawing.Color.SpringGreen;
-                toolStripStatusLabel.Text = String.Format("Status Logging Message: {0}: {1}", loggingEvent.Level.Name, loggingEvent.MessageObject.ToString());
+                //toolStripStatusLabel.BackColor = System.Drawing.Color.SpringGreen;
+                //toolStripStatusLabel.Text = String.Format("Status Logging Message: {0}: {1}", loggingEvent.Level.Name, loggingEvent.MessageObject.ToString());
             }
         }
 
@@ -109,7 +109,7 @@ namespace GUILayer.Forms
         private void resetStatusBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toolStripStatusLabel.BackColor = System.Drawing.Color.SpringGreen;
-            toolStripStatusLabel.Text = "Status Logging Message: Statusbar reset";
+            toolStripStatusLabel.Text = "Status Logging Message: Statusbar reset @" + DateTime.Now.ToString();
         }
         #endregion
 
@@ -146,7 +146,6 @@ namespace GUILayer.Forms
 
             // Update status labels
             toolStripStatusLabel.Text = "Program initialization complete.";
-            lblPlaylistName.Text = ProducerElementsPlaylistName;
         }
 
         // Handler for main form load
@@ -164,19 +163,40 @@ namespace GUILayer.Forms
                 mseRestEndpointSource = "http://" + mseIpAddressSource + ":" + Convert.ToInt32(msePortRest) + "/";
                 mseRestEndpointDestination = "http://" + mseIpAddressDestination + ":" + Convert.ToInt32(msePortRest) + "/";
 
-                // Read in show & playlist info
-                topLevelShowsDirectoryURI = mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectory;
-                masterPlaylistsDirectoryURI = mseRestEndpointSource + Properties.Settings.Default.MasterPlaylistsDirectory;
-                ProducerElementsPlaylistName = Properties.Settings.Default.ProducerElementsPlaylistName;
-
-                // Set show directory & playlist name labels
-                lblShowDirectory.Text = Properties.Settings.Default.TopLevelShowsDirectory;
-                lblPlaylistName.Text = ProducerElementsPlaylistName;
+                // Read in show & playlist info based on network selected
+                networkSelection = Properties.Settings.Default.NetworkSelection;
+                if (networkSelection == "FNC")
+                {
+                    // Set UI widgets
+                    rbSelectFNC.Checked = true;
+                    rbSelectFBN.Checked = false;
+                    // Set paths
+                    topLevelShowsDirectoryURIActive = mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectoryFNC;
+                    masterPlaylistsDirectoryURIActive = mseRestEndpointSource + Properties.Settings.Default.MasterPlaylistsDirectoryFNC;
+                    ProducerElementsPlaylistNameActive = Properties.Settings.Default.ProducerElementsPlaylistNameFNC;
+                    // Set show directory & playlist name labels
+                    lblShowDirectory.Text = Properties.Settings.Default.TopLevelShowsDirectoryFNC;
+                    lblPlaylistName.Text = Properties.Settings.Default.ProducerElementsPlaylistNameFNC;
+                }
+                else if (networkSelection == "FBN")
+                {
+                    // Set UI widgets
+                    rbSelectFNC.Checked = false;
+                    rbSelectFBN.Checked = true;
+                    // Set paths
+                    topLevelShowsDirectoryURIActive = mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectoryFBN;
+                    masterPlaylistsDirectoryURIActive = mseRestEndpointSource + Properties.Settings.Default.MasterPlaylistsDirectoryFBN;
+                    ProducerElementsPlaylistNameActive = Properties.Settings.Default.ProducerElementsPlaylistNameFBN;
+                    // Set show directory & playlist name labels
+                    lblShowDirectory.Text = Properties.Settings.Default.TopLevelShowsDirectoryFBN;
+                    lblPlaylistName.Text = Properties.Settings.Default.ProducerElementsPlaylistNameFBN;
+                }
 
                 // Populate grid/list of shows
                 MANAGE_SHOWS getShowList = new MANAGE_SHOWS();
                 // Get the URI's for available shows
-                showNames = getShowList.GetListOfShows(mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectory);
+                //showNames = getShowList.GetListOfShows(mseRestEndpointSource + topLevelShowsDirectoryURIActive);
+                showNames = getShowList.GetListOfShows(topLevelShowsDirectoryURIActive);
 
                 // Setup the available shows grid
                 availableShowsGrid.AutoGenerateColumns = false;
@@ -188,9 +208,6 @@ namespace GUILayer.Forms
                 hostName = HostIPNameFunctions.GetHostName(hostIpAddress);
                 lblIpAddress.Text = hostIpAddress;
                 lblHostName.Text = hostName;
-
-                // Call method to setup connections to source & destination MSE's
-                setupMSEClientSockets();
 
                 // Log application start
                 log.Info("Starting Multi-Play Playlist utility");
@@ -244,6 +261,39 @@ namespace GUILayer.Forms
             //    d. Post the XML using REPLACE command 
             try
             {
+                try
+                {
+                    // Clear debug text box
+                    this.tbDebug.Text = "";
+
+                    // Instantiate and setup the client sockets
+                    // Establish the remote endpoints for the sockets
+                    System.Net.IPAddress mseSourceIpAddress = System.Net.IPAddress.Parse(mseIpAddressSource);
+                    System.Net.IPAddress mseDestinationIpAddress = System.Net.IPAddress.Parse(mseIpAddressDestination);
+
+                    // Instantiate the MSE client sockets
+                    sourceMSEClientSocket = new ClientSocket(mseSourceIpAddress, Convert.ToInt32(msePortPepTalk));
+                    destinationMSEClientSocket = new ClientSocket(mseDestinationIpAddress, Convert.ToInt32(msePortPepTalk));
+
+                    // Initialize event handlers for the sockets
+                    sourceMSEClientSocket.DataReceived += sourceMSEDataReceived;
+                    destinationMSEClientSocket.DataReceived += destinationMSEDataReceived;
+                    sourceMSEClientSocket.ConnectionStatusChanged += sourceMSEConnectionStatusChanged;
+                    destinationMSEClientSocket.ConnectionStatusChanged += destinationMSEConnectionStatusChanged;
+
+                    // Connect to the source & destination MSE's; call-backs for connection status will indicate status of client sockets
+                    sourceMSEClientSocket.AutoReconnect = true;
+                    sourceMSEClientSocket.Connect();
+                    destinationMSEClientSocket.AutoReconnect = true;
+                    destinationMSEClientSocket.Connect();
+                }
+                catch (Exception ex)
+                {
+                    // Log error
+                    log.Error("Error occurred while trying to setup MSE client sockets for PepTalk: " + ex.Message);
+                    log.Debug("Error occurred while trying to setup MSE client sockets for PepTalk", ex);
+                }
+
                 // Set the sublist ID
                 if (showNames.Count > 0)
                 {
@@ -262,20 +312,14 @@ namespace GUILayer.Forms
                     string playlistAltLink = string.Empty;
 
                     // Get playlists directory URI based on current show
-                    string showPlaylistsDirectoryURI = show.GetPlaylistDirectoryFromShow(topLevelShowsDirectoryURI, selectedShow);
+                    string showPlaylistsDirectoryURI = show.GetPlaylistDirectoryFromShow(topLevelShowsDirectoryURIActive, selectedShow);
 
-                    playlistAltLink = playlist.GetPlaylistAltLink(showPlaylistsDirectoryURI, ProducerElementsPlaylistName);
+                    playlistAltLink = playlist.GetPlaylistAltLink(showPlaylistsDirectoryURI, ProducerElementsPlaylistNameActive);
                     if (playlistAltLink != string.Empty)
                     {
-                        // Show current show path - DEBUG ONLY
-                        if (showDebugWindow)
-                        {
-                            tbDebug.Text = playlistAltLink;
-                        }
-
-                        // Now, do the PepTalk operations
+                        // Do the PepTalk operations
                         // Extract the playlist URI from the playlist path; also converts the escaped { & } characters
-                        // Note that playlist has application scope
+                        // Note that playlist name has application scope
                         playlistPath = getPlaylistPathFromURI(removeEscapeSequences(playlistAltLink));
 
                         // Frame and send the commands
@@ -284,6 +328,11 @@ namespace GUILayer.Forms
                         if (mseConnectedSource)
                         {
                             sourceMSESendCommand(cmd1);
+
+                            if (showDebugWindow)
+                            {
+                                tbDebug.AppendText("SEND TO SOURCE MSE: " + cmd1 + "\r\n\r\n");
+                            }
                         }
 
                         // Send command to get playlist XML
@@ -294,7 +343,7 @@ namespace GUILayer.Forms
 
                             if (showDebugWindow)
                             {
-                                tbDebug.Text = cmd1 + "\r\n\r\n" + cmd2;
+                                tbDebug.AppendText("SEND TO SOURCE MSE: " + cmd2 + "\r\n\r\n");
                             }
                         }
 
@@ -305,7 +354,9 @@ namespace GUILayer.Forms
                         toolStripStatusLabel.BackColor = System.Drawing.Color.SpringGreen;
                         toolStripStatusLabel.Text = "Playlist successfully copied from source MSE to destination MSE @" + 
                             String.Format("{0:h:mm:ss tt  MMM dd, yyyy}", DateTime.Now);
+
                     }
+
                     // Log if the URI could not be resolved
                     else
                     {
@@ -328,40 +379,6 @@ namespace GUILayer.Forms
         #endregion
 
         #region MSE PepTalk connection & send/receive methods
-        // Method to setup the PepTalk connections to the source & destination MSE's
-        public void setupMSEClientSockets()
-        {
-            try
-            {
-                // Instantiate and setup the client sockets
-                // Establish the remote endpoints for the sockets
-                System.Net.IPAddress mseSourceIpAddress = System.Net.IPAddress.Parse(mseIpAddressSource);
-                System.Net.IPAddress mseDestinationIpAddress = System.Net.IPAddress.Parse(mseIpAddressDestination);
-
-                // Instantiate the MSE client sockets
-                sourceMSEClientSocket = new ClientSocket(mseSourceIpAddress, Convert.ToInt32(msePortPepTalk));
-                destinationMSEClientSocket = new ClientSocket(mseDestinationIpAddress, Convert.ToInt32(msePortPepTalk));
-
-                // Initialize event handlers for the sockets
-                sourceMSEClientSocket.DataReceived += sourceMSEDataReceived;
-                destinationMSEClientSocket.DataReceived += destinationMSEDataReceived;
-                sourceMSEClientSocket.ConnectionStatusChanged += sourceMSEConnectionStatusChanged;
-                destinationMSEClientSocket.ConnectionStatusChanged += destinationMSEConnectionStatusChanged;
-
-                // Connect to the source & destination MSE's; call-backs for connection status will indicate status of client sockets
-                sourceMSEClientSocket.AutoReconnect = true;
-                sourceMSEClientSocket.Connect();
-                destinationMSEClientSocket.AutoReconnect = true;
-                destinationMSEClientSocket.Connect();
-            }
-            catch (Exception ex)
-            {
-                // Log error
-                log.Error("Error occurred while trying to setup MSE client sockets for PepTalk: " + ex.Message);
-                log.Debug("Error occurred while trying to setup MSE client sockets for PepTalk", ex);
-            }
-        }
-
         // Handler for source & destination MSE connection status change
         public void sourceMSEConnectionStatusChanged(ClientSocket sender, ClientSocket.ConnectionStatus status)
         {
@@ -372,7 +389,6 @@ namespace GUILayer.Forms
             }
             else
             {
-                //GraphicsChannelConnected = false;
                 mseConnectedSource = false;
             }
             // Send to log - DEBUG ONLY
@@ -401,6 +417,7 @@ namespace GUILayer.Forms
             {
                 // Send the data; terminiate with CRLF
                 sourceMSEClientSocket.Send(dataString + "\n");
+
                 // Log if debug mode
                 log.Debug("Command sent to source MSE: " + dataString);
             }
@@ -419,6 +436,7 @@ namespace GUILayer.Forms
             {
                 // Send the data
                 destinationMSEClientSocket.Send(dataString + "\n");
+
                 // Log if debug mode
                 log.Debug("Command sent to destination MSE: " + dataString);
             }
@@ -442,6 +460,7 @@ namespace GUILayer.Forms
             {
                 // Send protocol command
                 string cmd1 = "1 protocol peptalk noevents";
+
                 if (mseConnectedDestination)
                 {
                     destinationMSESendCommand(cmd1);
@@ -467,12 +486,12 @@ namespace GUILayer.Forms
                 // If these threads are different, it returns true.
                 if ((this.tbDebug.InvokeRequired) && (showDebugWindow))
                 {
-                    sendPayloadCallback d = new sendPayloadCallback(sendPayload);
-                    this.Invoke(d, new object[] { this.tbDebug.Text + "\r\n\r\n" + playlistXMLReceived + "\r\n\r\n" + cmd2 });
+                    sendPayloadCallback callback = new sendPayloadCallback(sendPayload);
+                    this.Invoke(callback, new object[] { "SEND TO DESTINATON MSE: " + cmd2 + "\r\n\r\n" });
                 }
                 else if (showDebugWindow)
                 {
-                    this.tbDebug.Text = this.tbDebug.Text + "\r\n\r\n" + playlistXMLReceived + "\r\n\r\n" + cmd2;
+                    this.tbDebug.AppendText("SEND TO DESTINATON MSE: " + cmd2 + "\r\n\r\n");
                 }
 
                 // Post application log entry
@@ -480,16 +499,15 @@ namespace GUILayer.Forms
                 applicationLogsAccess.DBConnectionString = LoggingDBConnectionString;
                 applicationLogsAccess.PostApplicationLogEntry(
                     Properties.Settings.Default.ApplicationName,
-                    "Copies XML payload for specified show/playlist from source MSE to destination MSE",
+                    "Copied XML payload for specified " + networkSelection + " show/playlist from source MSE to destination MSE",
                     hostName,
                     hostIpAddress,
                     mseIpAddressSource,
                     mseIpAddressDestination,
                     "Copied playlist XML payload",
-                    "Show/Playlist Path: " + Properties.Settings.Default.TopLevelShowsDirectory + ProducerElementsPlaylistName,
+                    "Show/Playlist Path: " + topLevelShowsDirectoryURIActive + ProducerElementsPlaylistNameActive,
                     System.DateTime.Now
                 );
-
             }
             catch (Exception ex)
             {
@@ -502,10 +520,34 @@ namespace GUILayer.Forms
         // Handler for data received back from source MSE PepTalkclient socket; this will be the playlist data XML payload
         private void sourceMSEDataReceived(ClientSocket sender, object data)
         {
-            // Make thread-safe call to format and send the data to the destination MSE
-            this.sendPayload(data.ToString());
-            // Log if debug mode
-            log.Debug("Command data received from source MSE: " + data);
+            // Make call to format and send the data to the destination MSE
+            // Only send if it's the XML payload => command ID = 2
+            string inStr = data.ToString();
+            string payloadStr = string.Empty;
+
+            // Check for, and strip out echoed protocol command
+            if (inStr[0] == '1')
+            {
+                // Strip out any echoed protocol command 
+                int startPos = inStr.IndexOf("\r\n") + 2;
+                payloadStr = inStr.Substring(startPos);
+                //payloadStr = payloadStr.Substring(0, payloadStr.Length - 1);
+
+                if ((payloadStr.Length > 0) && (payloadStr[0] == '2'))
+                {
+                    //this.sendPayload(data.ToString());
+                    this.sendPayload(payloadStr);
+                    // Log if debug mode
+                    log.Debug("Command data received from source MSE: " + data);
+                }
+            }
+            else if (inStr[0] == '2')
+            {
+                payloadStr = inStr;
+                this.sendPayload(payloadStr);
+                // Log if debug mode
+                log.Debug("Command data received from source MSE: " + data);
+            }
         }
 
         // This delegate enables asynchronous calls for setting the text for the debug textbox; shows status info received from
@@ -521,12 +563,13 @@ namespace GUILayer.Forms
             // If these threads are different, it returns true.
             if ((this.tbDebug.InvokeRequired) && (showDebugWindow))
             {
-                setTextCallback d = new setTextCallback(setText);
-                this.Invoke(d, new object[] { this.tbDebug.Text + text + "\r\n\r\n" });
+                setTextCallback callback = new setTextCallback(setText);
+                this.Invoke(callback, new object[] { "RECEIVED FROM DESTINATION MSE: " + text + "\r\n\r\n" });
             }
             else if (showDebugWindow)
             {
-                this.tbDebug.Text = this.tbDebug.Text + "\r\n\r\n" + text;
+                //this.tbDebug.AppendText("RECEIVED FROM DESTINATION MSE: " + text + "\r\n\r\n");
+                this.tbDebug.AppendText(text);
             }
         }
 
@@ -561,7 +604,7 @@ namespace GUILayer.Forms
             }
             else
             {
-                indicatorSourceMSE.FillColor = System.Drawing.Color.Lime;
+                indicatorSourceMSE.FillColor = System.Drawing.Color.Gray;
             }
             if (mseConnectedDestination)
             {
@@ -569,7 +612,7 @@ namespace GUILayer.Forms
             }
             else
             {
-                indicatorDestinationMSE.FillColor = System.Drawing.Color.Lime;
+                indicatorDestinationMSE.FillColor = System.Drawing.Color.Gray;
             }
         }
         #endregion
@@ -678,7 +721,7 @@ namespace GUILayer.Forms
             // Gets the URI's for available shows
             MANAGE_SHOWS getShowList = new MANAGE_SHOWS();
 
-            showNames = getShowList.GetListOfShows(mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectory);
+            showNames = getShowList.GetListOfShows(mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectoryFNC);
 
             // Setup the available stacks grid
             availableShowsGrid.AutoGenerateColumns = false;
@@ -690,6 +733,48 @@ namespace GUILayer.Forms
         private void availableShowsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        // Handler for select FNC as network
+        private void rbSelectFNC_CheckedChanged(object sender, EventArgs e)
+        {
+            // Set controls background color
+            rbSelectFNC.BackColor = System.Drawing.Color.SpringGreen;
+            rbSelectFBN.BackColor = System.Drawing.Color.Gray;
+
+            // Set active variables
+            topLevelShowsDirectoryURIActive = topLevelShowsDirectoryURIFNC;
+            masterPlaylistsDirectoryURIActive = masterPlaylistsDirectoryURIFNC;
+            ProducerElementsPlaylistNameActive = ProducerElementsPlaylistNameFNC;
+            // Set show directory & playlist name labels
+            lblShowDirectory.Text = Properties.Settings.Default.TopLevelShowsDirectoryFNC;
+            lblPlaylistName.Text = Properties.Settings.Default.ProducerElementsPlaylistNameFNC;
+
+            // Set & save out the network selection
+            networkSelection = "FNC";
+            Properties.Settings.Default.NetworkSelection = networkSelection;
+            Properties.Settings.Default.Save();
+        }
+
+        // Handler for select FBN as network
+        private void rbSelectFBN_CheckedChanged(object sender, EventArgs e)
+        {
+            // Set controls background color
+            rbSelectFBN.BackColor = System.Drawing.Color.SpringGreen;
+            rbSelectFNC.BackColor = System.Drawing.Color.Gray;
+
+            // Set active variables
+            topLevelShowsDirectoryURIActive = topLevelShowsDirectoryURIFBN;
+            masterPlaylistsDirectoryURIActive = masterPlaylistsDirectoryURIFBN;
+            ProducerElementsPlaylistNameActive = ProducerElementsPlaylistNameFBN;
+            // Set show directory & playlist name labels
+            lblShowDirectory.Text = Properties.Settings.Default.TopLevelShowsDirectoryFBN;
+            lblPlaylistName.Text = Properties.Settings.Default.ProducerElementsPlaylistNameFBN;
+
+            // Set & save out the network selection
+            networkSelection = "FBN";
+            Properties.Settings.Default.NetworkSelection = networkSelection;
+            Properties.Settings.Default.Save();
         }
     }
 }
