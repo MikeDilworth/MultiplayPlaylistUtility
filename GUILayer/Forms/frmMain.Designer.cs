@@ -143,7 +143,7 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 442);
+            this.statusStrip.Location = new System.Drawing.Point(0, 688);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(577, 22);
             this.statusStrip.TabIndex = 53;
@@ -307,7 +307,7 @@
             this.btnSelectShow.Name = "btnSelectShow";
             this.btnSelectShow.Size = new System.Drawing.Size(185, 99);
             this.btnSelectShow.TabIndex = 125;
-            this.btnSelectShow.Text = "  Select/Copy Show   (F1)";
+            this.btnSelectShow.Text = "  Copy Show (F1)";
             this.btnSelectShow.UseVisualStyleBackColor = true;
             this.btnSelectShow.Click += new System.EventHandler(this.btnSelectShow_Click);
             // 
@@ -352,6 +352,7 @@
             this.availableShowsGrid.Size = new System.Drawing.Size(349, 196);
             this.availableShowsGrid.TabIndex = 124;
             this.availableShowsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.availableShowsGrid_CellContentClick);
+            this.availableShowsGrid.SelectionChanged += new System.EventHandler(this.availableShowsGrid_SelectionChanged);
             this.availableShowsGrid.DoubleClick += new System.EventHandler(this.availableShowsGrid_DoubleClick);
             // 
             // dataGridViewTextBoxColumn2
@@ -401,7 +402,7 @@
             this.tbDebug.Multiline = true;
             this.tbDebug.Name = "tbDebug";
             this.tbDebug.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbDebug.Size = new System.Drawing.Size(549, 139);
+            this.tbDebug.Size = new System.Drawing.Size(549, 212);
             this.tbDebug.TabIndex = 129;
             // 
             // shapeContainer1
@@ -412,7 +413,7 @@
             this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
             this.indicatorDestinationMSE,
             this.indicatorSourceMSE});
-            this.shapeContainer1.Size = new System.Drawing.Size(577, 464);
+            this.shapeContainer1.Size = new System.Drawing.Size(577, 710);
             this.shapeContainer1.TabIndex = 130;
             this.shapeContainer1.TabStop = false;
             // 
@@ -523,7 +524,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.ClientSize = new System.Drawing.Size(577, 464);
+            this.ClientSize = new System.Drawing.Size(577, 710);
             this.Controls.Add(this.lblNetworkSelect);
             this.Controls.Add(this.rbSelectFBN);
             this.Controls.Add(this.rbSelectFNC);
@@ -551,6 +552,7 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Multi-Play Playlist Utility  Version ";
+            this.Activated += new System.EventHandler(this.frmMain_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.frmMain_Load);
