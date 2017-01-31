@@ -84,7 +84,7 @@ namespace GUILayer.Forms
         string playlistPath = string.Empty;
 
         // For debug
-        bool showDebugWindow = true;
+        bool showDebugWindow = false;
 
         #endregion
 
@@ -516,16 +516,17 @@ namespace GUILayer.Forms
                 }
 
                 // Set the debug text
+                // DISABLED FOR NOW - NEED TO RE-DO AS WORKER THREAD
                 // InvokeRequired required compares the thread ID of the calling thread to the thread ID of the creating thread.
                 // If these threads are different, it returns true.
                 if ((this.tbDebug.InvokeRequired) && (showDebugWindow))
                 {
-                    sendPayloadCallback callback = new sendPayloadCallback(sendPayload);
-                    this.Invoke(callback, new object[] { "SEND TO DESTINATON MSE: " + cmd2 + "\r\n\r\n" });
+                    //sendPayloadCallback callback = new sendPayloadCallback(sendPayload);
+                    //this.Invoke(callback, new object[] { "SEND TO DESTINATON MSE: " + cmd2 + "\r\n\r\n" });
                 }
                 else if (showDebugWindow)
                 {
-                    this.tbDebug.AppendText("SEND TO DESTINATON MSE: " + cmd2 + "\r\n\r\n");
+                    //this.tbDebug.AppendText("SEND TO DESTINATON MSE: " + cmd2 + "\r\n\r\n");
                 }
 
                 // Post application log entry
@@ -562,6 +563,7 @@ namespace GUILayer.Forms
             // Check for, and strip out echoed protocol command
             if (inStr[0] == '1')
             {
+                
                 // Strip out any echoed protocol command 
                 int startPos = inStr.IndexOf("\r\n") + 2;
                 payloadStr = inStr.Substring(startPos);
@@ -574,9 +576,10 @@ namespace GUILayer.Forms
                     // Log if debug mode
                     log.Debug("Command data received from source MSE: " + data);
                 }
+                
             }
             else if (inStr[0] == '2')
-            {
+            {         
                 payloadStr = inStr;
                 this.sendPayload(payloadStr);
                 // Log if debug mode
