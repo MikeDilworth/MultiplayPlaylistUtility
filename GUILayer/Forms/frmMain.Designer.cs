@@ -351,7 +351,6 @@
             this.availableShowsGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.availableShowsGrid.Size = new System.Drawing.Size(349, 196);
             this.availableShowsGrid.TabIndex = 124;
-            this.availableShowsGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.availableShowsGrid_CellContentClick);
             this.availableShowsGrid.SelectionChanged += new System.EventHandler(this.availableShowsGrid_SelectionChanged);
             this.availableShowsGrid.DoubleClick += new System.EventHandler(this.availableShowsGrid_DoubleClick);
             // 

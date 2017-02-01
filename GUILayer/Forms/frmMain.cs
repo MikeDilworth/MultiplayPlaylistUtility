@@ -530,6 +530,10 @@ namespace GUILayer.Forms
                 string cmd2 = "2 replace {" + Convert.ToString(getByteCount(playlistPath)) + "}" + playlistPath + " ";
                 // Now, append XML payload preceded by byte count
                 cmd2 = cmd2 + "{" + Convert.ToString(getByteCount(playlistXMLReceived)) + "}" + playlistXMLReceived;
+
+                // Change state of loaded flag to ensure all elements are loaded on copy
+                cmd2 = cmd2.Replace("loaded = \"0.00\"", "loaded = \"1.00\"");                                
+
                 // Send the payload to the destination MSE
                 if (mseConnectedDestination)
                 {
@@ -767,15 +771,25 @@ namespace GUILayer.Forms
         // Handler for Select & Copy Show button
         private void btnCopyShow_Click(object sender, EventArgs e)
         {
-            // Call method to initiate copy of data from source to destination. Method sends request for data to source MSE. 
-            // Once callback for data received is hit, the data is formatted and sent to the destination MSE.
-            copyPlaylistXMLSourceToDestination();
+            if (selectedShow == string.Empty)
+            {
+                DialogResult result1 = MessageBox.Show("You need to select a show from the list before initiating a copy.", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else
+            {
+                // Call method to initiate copy of data from source to destination. Method sends request for data to source MSE. 
+                // Once callback for data received is hit, the data is formatted and sent to the destination MSE.
+                copyPlaylistXMLSourceToDestination();
 
-            // Clear selected row/show selection
-            availableShowsGrid.CurrentCell = null;
-            availableShowsGrid.ClearSelection();
-            lblCurrentShow.Text = "N/A";
-            lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
+                // Clear selected row/show selection
+                availableShowsGrid.CurrentCell = null;
+                availableShowsGrid.ClearSelection();
+                selectedShow = string.Empty;
+                lblCurrentShow.Text = "N/A";
+                lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
+            }
         }
 
         // Handler for double-click on show select grid
@@ -789,26 +803,25 @@ namespace GUILayer.Forms
         // Handler for button to refresh list of shows
         private void btnRefreshShowList_Click(object sender, EventArgs e)
         {
+            // Clear collection
             showNames.Clear();
 
-            // Gets the URI's for available shows
-            showNames = showSource.GetListOfShows(mseRestEndpointSource + topLevelShowsDirectoryURIActiveSource);
+            // Populate grid/list of shows
+            showNames = showSource.GetListOfShows(topLevelShowsDirectoryURIActiveSource);
 
-            // Setup the available stacks grid
+            // Setup the available shows grid
             availableShowsGrid.AutoGenerateColumns = false;
             var availableShowsGridDataSource = new BindingSource(showNames, null);
             availableShowsGrid.DataSource = availableShowsGridDataSource;
 
-            // Clear the show selection
+            // Clear selected row/show selection
             availableShowsGrid.CurrentCell = null;
             availableShowsGrid.ClearSelection();
+            selectedShow = string.Empty;
+            lblCurrentShow.Text = "N/A";
+            lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
         }
         #endregion
-
-        private void availableShowsGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
 
         #region UI event handlers
         // Handler for select FNC as network
@@ -849,6 +862,7 @@ namespace GUILayer.Forms
             // Clear selected row/show selection
             availableShowsGrid.CurrentCell = null;
             availableShowsGrid.ClearSelection();
+            selectedShow = string.Empty;
             lblCurrentShow.Text = "N/A";
             lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
 
@@ -896,6 +910,7 @@ namespace GUILayer.Forms
             // Clear selected row/show selection
             availableShowsGrid.CurrentCell = null;
             availableShowsGrid.ClearSelection();
+            selectedShow = string.Empty;
             lblCurrentShow.Text = "N/A";
             lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
 
