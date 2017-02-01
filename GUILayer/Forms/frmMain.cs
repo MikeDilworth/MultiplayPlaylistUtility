@@ -51,17 +51,17 @@ namespace GUILayer.Forms
         int msePortPepTalk = 0;
         string mseRestEndpointSource = string.Empty;
         string mseRestEndpointDestination = string.Empty;
-        string topLevelShowsDirectoryURIFNC = string.Empty;
-        string topLevelShowsDirectoryURIFBN = string.Empty;
+        string topLevelShowsDirectoryFNC = string.Empty;
+        string topLevelShowsDirectoryFBN = string.Empty;
         string topLevelShowsDirectoryURIActiveSource = string.Empty;
         string topLevelShowsDirectoryURIActiveDestination = string.Empty;
-        string masterPlaylistsDirectoryURIFNC = string.Empty;
-        string masterPlaylistsDirectoryURIFBN = string.Empty;
+        string masterPlaylistsDirectoryFNC = string.Empty;
+        string masterPlaylistsDirectoryFBN = string.Empty;
         string masterPlaylistsDirectoryURIActiveSource = string.Empty;
         string masterPlaylistsDirectoryURIActiveDestination = string.Empty;
-        string ProducerElementsPlaylistNameFNC = string.Empty;
-        string ProducerElementsPlaylistNameFBN = string.Empty;
-        string ProducerElementsPlaylistNameActive = string.Empty;
+        string producerElementsPlaylistNameFNC = string.Empty;
+        string producerElementsPlaylistNameFBN = string.Empty;
+        string producerElementsPlaylistNameActive = string.Empty;
         bool mseConnectedSource = false;
         bool mseConnectedDestination = false;
         string networkSelection = string.Empty;
@@ -167,6 +167,14 @@ namespace GUILayer.Forms
                 mseRestEndpointSource = "http://" + mseIpAddressSource + ":" + Convert.ToInt32(msePortRest) + "/";
                 mseRestEndpointDestination = "http://" + mseIpAddressDestination + ":" + Convert.ToInt32(msePortRest) + "/";
 
+                // Set network directories & playlist name
+                topLevelShowsDirectoryFNC = Properties.Settings.Default.TopLevelShowsDirectoryFNC;
+                topLevelShowsDirectoryFBN = Properties.Settings.Default.TopLevelShowsDirectoryFBN;
+                masterPlaylistsDirectoryFNC = Properties.Settings.Default.MasterPlaylistsDirectoryFNC;
+                masterPlaylistsDirectoryFBN = Properties.Settings.Default.MasterPlaylistsDirectoryFBN;
+                producerElementsPlaylistNameFNC = Properties.Settings.Default.ProducerElementsPlaylistNameFNC;
+                producerElementsPlaylistNameFBN = Properties.Settings.Default.ProducerElementsPlaylistNameFBN;
+
                 // Read in show & playlist info based on network selected
                 networkSelection = Properties.Settings.Default.NetworkSelection;
                 if (networkSelection == "FNC")
@@ -174,30 +182,32 @@ namespace GUILayer.Forms
                     // Set UI widgets
                     rbSelectFNC.Checked = true;
                     rbSelectFBN.Checked = false;
-                    // Set paths
-                    topLevelShowsDirectoryURIActiveSource = mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectoryFNC;
-                    topLevelShowsDirectoryURIActiveDestination = mseRestEndpointDestination + Properties.Settings.Default.TopLevelShowsDirectoryFNC;
-                    masterPlaylistsDirectoryURIActiveSource = mseRestEndpointSource + Properties.Settings.Default.MasterPlaylistsDirectoryFNC;
-                    masterPlaylistsDirectoryURIActiveDestination = mseRestEndpointDestination + Properties.Settings.Default.MasterPlaylistsDirectoryFNC;
-                    ProducerElementsPlaylistNameActive = Properties.Settings.Default.ProducerElementsPlaylistNameFNC;
+
+                    // Set URIs
+                    topLevelShowsDirectoryURIActiveSource = mseRestEndpointSource + topLevelShowsDirectoryFNC;
+                    topLevelShowsDirectoryURIActiveDestination = mseRestEndpointDestination + topLevelShowsDirectoryFNC;
+                    masterPlaylistsDirectoryURIActiveSource = mseRestEndpointSource + masterPlaylistsDirectoryFNC;
+                    masterPlaylistsDirectoryURIActiveDestination = mseRestEndpointDestination + masterPlaylistsDirectoryFNC;
+                    producerElementsPlaylistNameActive = producerElementsPlaylistNameFNC;
                     // Set show directory & playlist name labels
-                    lblShowDirectory.Text = Properties.Settings.Default.TopLevelShowsDirectoryFNC;
-                    lblPlaylistName.Text = Properties.Settings.Default.ProducerElementsPlaylistNameFNC;
+                    lblShowDirectory.Text = topLevelShowsDirectoryFNC;
+                    lblPlaylistName.Text = producerElementsPlaylistNameFNC;
                 }
                 else if (networkSelection == "FBN")
                 {
                     // Set UI widgets
                     rbSelectFNC.Checked = false;
                     rbSelectFBN.Checked = true;
-                    // Set paths
-                    topLevelShowsDirectoryURIActiveSource = mseRestEndpointSource + Properties.Settings.Default.TopLevelShowsDirectoryFBN;
-                    topLevelShowsDirectoryURIActiveDestination = mseRestEndpointDestination + Properties.Settings.Default.TopLevelShowsDirectoryFBN;
-                    masterPlaylistsDirectoryURIActiveSource = mseRestEndpointSource + Properties.Settings.Default.MasterPlaylistsDirectoryFBN;
-                    masterPlaylistsDirectoryURIActiveDestination = mseRestEndpointDestination + Properties.Settings.Default.MasterPlaylistsDirectoryFBN;
-                    ProducerElementsPlaylistNameActive = Properties.Settings.Default.ProducerElementsPlaylistNameFBN;
+
+                    // Set URIs
+                    topLevelShowsDirectoryURIActiveSource = mseRestEndpointSource + topLevelShowsDirectoryFBN;
+                    topLevelShowsDirectoryURIActiveDestination = mseRestEndpointDestination + topLevelShowsDirectoryFBN;
+                    masterPlaylistsDirectoryURIActiveSource = mseRestEndpointSource + masterPlaylistsDirectoryFBN;
+                    masterPlaylistsDirectoryURIActiveDestination = mseRestEndpointDestination + masterPlaylistsDirectoryFBN;
+                    producerElementsPlaylistNameActive = producerElementsPlaylistNameFBN;
                     // Set show directory & playlist name labels
-                    lblShowDirectory.Text = Properties.Settings.Default.TopLevelShowsDirectoryFBN;
-                    lblPlaylistName.Text = Properties.Settings.Default.ProducerElementsPlaylistNameFBN;
+                    lblShowDirectory.Text = topLevelShowsDirectoryFBN;
+                    lblPlaylistName.Text = producerElementsPlaylistNameFBN;
                 }
 
                 // Populate grid/list of shows
@@ -316,19 +326,30 @@ namespace GUILayer.Forms
                     log.Debug("Error occurred while trying to setup MSE client sockets for PepTalk", ex);
                 }
 
+                // Simple delay for 100mS to allow for connection status change to source & destination MSEs
+                for (int i = 0; i < 10; i++)
+                {
+                    Application.DoEvents();
+                    System.Threading.Thread.Sleep(10);
+                }
+
+                // If not connected to source & destination MSEs, alert operator and dump out
+                if (!mseConnectedSource)
+                {
+                    DialogResult result1 = MessageBox.Show("Connection could not be established to the source MSE", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (!mseConnectedDestination)
+                {
+                    DialogResult result1 = MessageBox.Show("Connection could not be established to the destination MSE", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 // Set the sublist ID
                 if (showNames.Count > 0)
                 {
-                    // Operation now done when show is selected in grid
-                    // Get the playlist ID from the grid
-                    // int currentShowIndex = availableShowsGrid.CurrentCell.RowIndex;
-                    // string ShowName = showNames[currentShowIndex].title.ToString();
-
-                    // Operation now done when show is selected in grid
-                    // Set new show name
-                    // selectedShow = ShowName;
-                    // lblCurrentShow.Text = selectedShow;
-
                     // Get the URI to the playlist
                     // Check for a playlist in the VDOM with the specified name & return the Down link
                     // Delete the group so it can be re-created
@@ -340,7 +361,7 @@ namespace GUILayer.Forms
                     string showPlaylistsDirectoryURIDestination = showSource.GetPlaylistDirectoryFromShow(topLevelShowsDirectoryURIActiveDestination, selectedShow);
 
                     // Check to make sure playlist exists on destination MSE; if not, alert operator
-                    bool playlistExistsOnDestinationMSE = playlistDestination.CheckIfPlaylistExists(showPlaylistsDirectoryURIDestination, ProducerElementsPlaylistNameActive);
+                    bool playlistExistsOnDestinationMSE = playlistDestination.CheckIfPlaylistExists(showPlaylistsDirectoryURIDestination, producerElementsPlaylistNameActive);
                     if (!playlistExistsOnDestinationMSE)
                     {
                         toolStripStatusLabel.BackColor = System.Drawing.Color.Red;
@@ -348,7 +369,7 @@ namespace GUILayer.Forms
                         return;
                     }
 
-                    playlistAltLink = playlistSource.GetPlaylistAltLink(showPlaylistsDirectoryURISource, ProducerElementsPlaylistNameActive);
+                    playlistAltLink = playlistSource.GetPlaylistAltLink(showPlaylistsDirectoryURISource, producerElementsPlaylistNameActive);
                     if (playlistAltLink != string.Empty)
                     {
                         // Do the PepTalk operations
@@ -540,7 +561,7 @@ namespace GUILayer.Forms
                     mseIpAddressSource,
                     mseIpAddressDestination,
                     "Copied playlist XML payload",
-                    "Show/Playlist Path: " + topLevelShowsDirectoryURIActiveSource + ProducerElementsPlaylistNameActive,
+                    "Show/Playlist Path: " + topLevelShowsDirectoryURIActiveSource + producerElementsPlaylistNameActive,
                     System.DateTime.Now
                 );
             }
@@ -633,6 +654,15 @@ namespace GUILayer.Forms
 
             //label1.Text = Convert.ToString(referenceTime);
             timeOfDayLabel.Text = String.Format("{0:h:mm:ss tt  MMM dd, yyyy}", referenceTime);
+
+            if (sourceMSEClientSocket == null)
+            {
+                mseConnectedSource = false;
+            }
+            if (destinationMSEClientSocket == null)
+            {
+                mseConnectedDestination = false;
+            }
 
             // Update MSE connected indicators for source & destination MSE's
             if (mseConnectedSource)
@@ -735,11 +765,17 @@ namespace GUILayer.Forms
 
         #region Action button handlers
         // Handler for Select & Copy Show button
-        private void btnSelectShow_Click(object sender, EventArgs e)
+        private void btnCopyShow_Click(object sender, EventArgs e)
         {
             // Call method to initiate copy of data from source to destination. Method sends request for data to source MSE. 
             // Once callback for data received is hit, the data is formatted and sent to the destination MSE.
             copyPlaylistXMLSourceToDestination();
+
+            // Clear selected row/show selection
+            availableShowsGrid.CurrentCell = null;
+            availableShowsGrid.ClearSelection();
+            lblCurrentShow.Text = "N/A";
+            lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
         }
 
         // Handler for double-click on show select grid
@@ -778,17 +814,43 @@ namespace GUILayer.Forms
         // Handler for select FNC as network
         private void rbSelectFNC_CheckedChanged(object sender, EventArgs e)
         {
+            // Disconnect from MSEs if connected
+            if (sourceMSEClientSocket != null)
+            {
+                sourceMSEClientSocket.Disconnect();
+            }
+            if (destinationMSEClientSocket != null)
+            {
+                destinationMSEClientSocket.Disconnect();
+            }
+
             // Set controls background color
             rbSelectFNC.BackColor = System.Drawing.Color.SpringGreen;
             rbSelectFBN.BackColor = System.Drawing.Color.Gray;
 
-            // Set active variables
-            topLevelShowsDirectoryURIActiveSource = topLevelShowsDirectoryURIFNC;
-            masterPlaylistsDirectoryURIActiveSource = masterPlaylistsDirectoryURIFNC;
-            ProducerElementsPlaylistNameActive = ProducerElementsPlaylistNameFNC;
+            // Set URIs
+            topLevelShowsDirectoryURIActiveSource = mseRestEndpointSource + topLevelShowsDirectoryFNC;
+            topLevelShowsDirectoryURIActiveDestination = mseRestEndpointDestination + topLevelShowsDirectoryFNC;
+            masterPlaylistsDirectoryURIActiveSource = mseRestEndpointSource + masterPlaylistsDirectoryFNC;
+            masterPlaylistsDirectoryURIActiveDestination = mseRestEndpointDestination + masterPlaylistsDirectoryFNC;
+            producerElementsPlaylistNameActive = producerElementsPlaylistNameFNC;
             // Set show directory & playlist name labels
-            lblShowDirectory.Text = Properties.Settings.Default.TopLevelShowsDirectoryFNC;
-            lblPlaylistName.Text = Properties.Settings.Default.ProducerElementsPlaylistNameFNC;
+            lblShowDirectory.Text = topLevelShowsDirectoryFNC;
+            lblPlaylistName.Text = producerElementsPlaylistNameFNC;
+
+            // Populate grid/list of shows
+            showNames = showSource.GetListOfShows(topLevelShowsDirectoryURIActiveSource);
+
+            // Setup the available shows grid
+            availableShowsGrid.AutoGenerateColumns = false;
+            var availableShowsGridDataSource = new BindingSource(showNames, null);
+            availableShowsGrid.DataSource = availableShowsGridDataSource;
+
+            // Clear selected row/show selection
+            availableShowsGrid.CurrentCell = null;
+            availableShowsGrid.ClearSelection();
+            lblCurrentShow.Text = "N/A";
+            lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
 
             // Set & save out the network selection
             networkSelection = "FNC";
@@ -799,17 +861,43 @@ namespace GUILayer.Forms
         // Handler for select FBN as network
         private void rbSelectFBN_CheckedChanged(object sender, EventArgs e)
         {
+            // Disconnect from MSEs if connected
+            if (sourceMSEClientSocket != null)
+            {
+                sourceMSEClientSocket.Disconnect();
+            }
+            if (destinationMSEClientSocket != null)
+            {
+                destinationMSEClientSocket.Disconnect();
+            }
+
             // Set controls background color
             rbSelectFBN.BackColor = System.Drawing.Color.SpringGreen;
             rbSelectFNC.BackColor = System.Drawing.Color.Gray;
 
-            // Set active variables
-            topLevelShowsDirectoryURIActiveSource = topLevelShowsDirectoryURIFBN;
-            masterPlaylistsDirectoryURIActiveSource = masterPlaylistsDirectoryURIFBN;
-            ProducerElementsPlaylistNameActive = ProducerElementsPlaylistNameFBN;
+            // Set URIs
+            topLevelShowsDirectoryURIActiveSource = mseRestEndpointSource + topLevelShowsDirectoryFBN;
+            topLevelShowsDirectoryURIActiveDestination = mseRestEndpointDestination + topLevelShowsDirectoryFBN;
+            masterPlaylistsDirectoryURIActiveSource = mseRestEndpointSource + masterPlaylistsDirectoryFBN;
+            masterPlaylistsDirectoryURIActiveDestination = mseRestEndpointDestination + masterPlaylistsDirectoryFBN;
+            producerElementsPlaylistNameActive = producerElementsPlaylistNameFBN;
             // Set show directory & playlist name labels
-            lblShowDirectory.Text = Properties.Settings.Default.TopLevelShowsDirectoryFBN;
-            lblPlaylistName.Text = Properties.Settings.Default.ProducerElementsPlaylistNameFBN;
+            lblShowDirectory.Text = topLevelShowsDirectoryFBN;
+            lblPlaylistName.Text = producerElementsPlaylistNameFBN;
+
+            // Populate grid/list of shows
+            showNames = showSource.GetListOfShows(topLevelShowsDirectoryURIActiveSource);
+
+            // Setup the available shows grid
+            availableShowsGrid.AutoGenerateColumns = false;
+            var availableShowsGridDataSource = new BindingSource(showNames, null);
+            availableShowsGrid.DataSource = availableShowsGridDataSource;
+
+            // Clear selected row/show selection
+            availableShowsGrid.CurrentCell = null;
+            availableShowsGrid.ClearSelection();
+            lblCurrentShow.Text = "N/A";
+            lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
 
             // Set & save out the network selection
             networkSelection = "FBN";
