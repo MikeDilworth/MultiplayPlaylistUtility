@@ -531,8 +531,8 @@ namespace GUILayer.Forms
                 // Now, append XML payload preceded by byte count
                 cmd2 = cmd2 + "{" + Convert.ToString(getByteCount(playlistXMLReceived)) + "}" + playlistXMLReceived;
 
-                // Change state of loaded flag to ensure all elements are loaded on copy
-                cmd2 = cmd2.Replace("loaded = \"0.00\"", "loaded = \"1.00\"");                                
+                // Change state of loaded flag to ensure all elements are put into "loaded" state on copy
+                cmd2 = cmd2.Replace("loaded=\"0.00\"", "loaded=\"1.00\"");                                
 
                 // Send the payload to the destination MSE
                 if (mseConnectedDestination)
