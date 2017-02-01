@@ -28,7 +28,7 @@ namespace GUILayer.Forms
 
         #endregion
 
-        #region Collection & binding list definitions
+        #region Collection, binding list & variable definitions
         /// <summary>
         /// Define classes for collections and logic
         /// </summary>
@@ -433,7 +433,7 @@ namespace GUILayer.Forms
         }
         #endregion
 
-        #region MSE PepTalk connection & send/receive methods
+        #region MSE PepTalk TCP client socket connections & send/receive methods
         // Handler for source & destination MSE connection status change
         public void sourceMSEConnectionStatusChanged(ClientSocket sender, ClientSocket.ConnectionStatus status)
         {
@@ -650,7 +650,7 @@ namespace GUILayer.Forms
         }
         #endregion
 
-        #region General Form related methods
+        #region Timer related methods
         // General update timer
         private void timerStatusUpdate_Tick(object sender, EventArgs e)
         {
@@ -711,7 +711,7 @@ namespace GUILayer.Forms
         }
         #endregion
 
-        #region UI widget data validation methods
+        #region UI widget data validation & function key methods
         /// <summary>
         /// UI widget data validation methods
         /// </summary>
@@ -767,7 +767,7 @@ namespace GUILayer.Forms
         }
         #endregion
 
-        #region Action button handlers
+        #region Action button, grid show list & radio button control event handlers
         // Handler for Select & Copy Show button
         private void btnCopyShow_Click(object sender, EventArgs e)
         {
@@ -821,9 +821,6 @@ namespace GUILayer.Forms
             lblCurrentShow.Text = "N/A";
             lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
         }
-        #endregion
-
-        #region UI event handlers
         // Handler for select FNC as network
         private void rbSelectFNC_CheckedChanged(object sender, EventArgs e)
         {
