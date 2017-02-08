@@ -128,6 +128,56 @@ namespace MSEInterface
         }
 
         /// <summary>
+        /// Get the Related link for the specified playlist
+        /// </summary>
+        public string GetPlaylistRelatedLink(string playlistDirectoryURI, string playlistName)
+        {
+            string playlistRelatedLink = string.Empty;
+
+            try
+            {
+                XElement playlistDoc;
+
+                GET_URI getURI = new GET_URI();
+
+                //Get all the playlist entries for the specified show
+                var playlistNames = getURI.SendGETRequest(playlistDirectoryURI).Descendants(Atom + "entry");
+
+                if (playlistNames != null)
+                {
+                    // Walk through each playlist and check for match by title
+                    foreach (XElement playlist in playlistNames)
+                    {
+                        string title = playlist.Element(Atom + "title").Value;
+
+                        // If title matches, get the Alt-link to the playlist
+                        if (title == playlistName)
+                        {
+                            string altLink = string.Empty;
+                            playlistDoc = playlist.Descendants(Atom + "link")
+                                .Where(x => (string)x.Attribute("rel") == "related")
+                                .FirstOrDefault();
+                            if (playlistDoc != null)
+                            {
+                                altLink = playlistDoc.Attribute("href").Value;
+                                // Set return value
+                                playlistRelatedLink = altLink;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                log.Error("MANAGE_PLAYLISTS Exception occurred: " + ex.Message);
+                log.Debug("MANAGE_PLAYLISTS Exception occurred", ex);
+            }
+            return playlistRelatedLink;
+        }
+
+        /// <summary>
         /// Get the Alt link for the specified playlist
         /// </summary>
         public string GetPlaylistAltLink(string playlistDirectoryURI, string playlistName)
@@ -359,9 +409,75 @@ namespace MSEInterface
                 // Log error
                 log.Error("MANAGE_PLAYLISTS Exception occurred: " + ex.Message);
                 log.Debug("MANAGE_PLAYLISTS Exception occurred", ex);
-            }          
+            }
 
             return collectionURI;
+        }
+
+        /// <summary>
+        /// Activate the specified playlist
+        /// </summary>
+        public REST_RESPONSE ActivatePlaylist(string playlistURI, string mseIpAddress, int msePortRest)
+        {
+            //Save the results in a new object
+            REST_RESPONSE restResponse = new REST_RESPONSE();
+
+            // Create payload 
+            string activateCommand = "<playlistactivation xmlns: viz = \"http://www.vizrt.com/atom\">" +
+                "<viz:active_on_profile >http://" + mseIpAddress + ":" + msePortRest +
+                "/profiles/STUDIO_F</viz:active_on_profile>" +
+                "</playlistactivation>";
+
+            byte[] bdata = System.Text.Encoding.UTF8.GetBytes(activateCommand);
+
+            try
+            {
+                // Instantiate REST client and send to destination MSE
+                REST_CLIENT client = new REST_CLIENT(playlistURI, HttpVerb.PUT, bdata, ContentTypes.PlaylistActivation);
+
+                // Don't expect REST response to PUT operation; response declared for proper method call
+                var response = client.MakeRequest();
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                log.Error("MANAGE_PLAYLISTS Exception occurred while attempting to activate playlist: " + ex.Message);
+                log.Debug("MANAGE_PLAYLISTS Exception occurred while attempting to activate playlist", ex);
+            }
+
+            return restResponse;
+        }
+
+        /// <summary>
+        /// Activate the specified playlist
+        /// </summary>
+        public REST_RESPONSE DeActivatePlaylist(string playlistURI)
+        {
+            //Save the results in a new object
+            REST_RESPONSE restResponse = new REST_RESPONSE();
+
+            // Create payload 
+            string deActivateCommand = "<playlistactivation />";
+            //string activateCommand = "<playlistactivation>" + "</playlistactivation>";
+
+            byte[] bdata = System.Text.Encoding.UTF8.GetBytes(deActivateCommand);
+
+            try
+            {
+                // Instantiate REST client and send to destination MSE
+                REST_CLIENT client = new REST_CLIENT(playlistURI, HttpVerb.PUT, bdata, ContentTypes.PlaylistActivation);
+
+                // Don't expect REST response to PUT operation; response declared for proper method call
+                var response = client.MakeRequest();
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                log.Error("MANAGE_PLAYLISTS Exception occurred while attempting to de-activate playlist: " + ex.Message);
+                log.Debug("MANAGE_PLAYLISTS Exception occurred while attempting to de-activate playlist", ex);
+            }
+
+            return restResponse;
         }
 
     }

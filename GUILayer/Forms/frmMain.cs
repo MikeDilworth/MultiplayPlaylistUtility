@@ -1,7 +1,7 @@
 ﻿//////////////////////////////////////////////////////////////////////////////
 // MULTI-PLAY PLAYLIST UTILITY - MAIN APPLICATION FORM
 // Version 1.0.0
-// M. Dilworth  Rev: 01/26/2017
+// M. Dilworth  Rev: 02/08/2017
 //////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -369,9 +369,18 @@ namespace GUILayer.Forms
                         return;
                     }
 
+                    // De-activate the playlist on the source
                     playlistAltLink = playlistSource.GetPlaylistAltLink(showPlaylistsDirectoryURISource, producerElementsPlaylistNameActive);
                     if (playlistAltLink != string.Empty)
                     {
+                        // Get self link for the source playlist & activate the playlist
+                        string playlistSelfLinkSource = playlistSource.GetPlaylistRelatedLink(showPlaylistsDirectoryURISource, producerElementsPlaylistNameActive);
+                        if (playlistSelfLinkSource != string.Empty)
+                        {
+                            // Send PUT command to activate playlist
+                            playlistSource.DeActivatePlaylist(playlistSelfLinkSource);
+                        }
+
                         // Do the PepTalk operations
                         // Extract the playlist URI from the playlist path; also converts the escaped { & } characters
                         // Note that playlist name has application scope
@@ -552,6 +561,27 @@ namespace GUILayer.Forms
                 else if (showDebugWindow)
                 {
                     //this.tbDebug.AppendText("SEND TO DESTINATON MSE: " + cmd2 + "\r\n\r\n");
+                }
+
+
+                // Get playlists directory URIs for source & destination based on current show
+                string showPlaylistsDirectoryURISource = showSource.GetPlaylistDirectoryFromShow(topLevelShowsDirectoryURIActiveSource, selectedShow);
+                string showPlaylistsDirectoryURIDestination = showSource.GetPlaylistDirectoryFromShow(topLevelShowsDirectoryURIActiveDestination, selectedShow);
+
+                // Get self link for the destination playlist & activate the playlist
+                string playlistSelfLinkDestination = playlistDestination.GetPlaylistRelatedLink(showPlaylistsDirectoryURIDestination, producerElementsPlaylistNameActive);
+                if (playlistSelfLinkDestination != string.Empty)
+                {
+                    // Send PUT command to activate playlist on destination
+                    playlistDestination.ActivatePlaylist(playlistSelfLinkDestination, mseIpAddressDestination, msePortRest);
+                }
+
+                // Get self link for the source playlist & activate the playlist
+                string playlistSelfLinkSource = playlistSource.GetPlaylistRelatedLink(showPlaylistsDirectoryURISource, producerElementsPlaylistNameActive);
+                if (playlistSelfLinkSource != string.Empty)
+                {
+                    // Send PUT command to activate playlist
+                    playlistSource.ActivatePlaylist(playlistSelfLinkSource, mseIpAddressSource, msePortRest);
                 }
 
                 // Post application log entry
@@ -786,7 +816,6 @@ namespace GUILayer.Forms
                 // Clear selected row/show selection
                 availableShowsGrid.CurrentCell = null;
                 availableShowsGrid.ClearSelection();
-                selectedShow = string.Empty;
                 lblCurrentShow.Text = "N/A";
                 lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
             }
