@@ -14,9 +14,6 @@
     <Setting Name="MasterPlaylistsDirectoryFNC" Type="System.String" Scope="Application">
       <Value Profile="(Default)">directory/playlists/</Value>
     </Setting>
-    <Setting Name="ProducerElementsPlaylistNameFNC" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">PRODUCER_ELEMENTS</Value>
-    </Setting>
     <Setting Name="ApplicationID" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">20</Value>
     </Setting>
@@ -41,9 +38,6 @@
     </Setting>
     <Setting Name="TopLevelShowsDirectoryFBN" Type="System.String" Scope="Application">
       <Value Profile="(Default)">directory/shows/FBN/</Value>
-    </Setting>
-    <Setting Name="ProducerElementsPlaylistNameFBN" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">PRODUCER_ELEMENTS</Value>
     </Setting>
     <Setting Name="MasterPlaylistsDirectoryFBN" Type="System.String" Scope="Application">
       <Value Profile="(Default)">directory/playlists/</Value>

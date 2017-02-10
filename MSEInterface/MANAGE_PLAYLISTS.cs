@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections.Specialized;
 using System.Xml.Linq;
+using System.ComponentModel;
 
 namespace MSEInterface
 {
@@ -23,10 +24,10 @@ namespace MSEInterface
         /// LIST OF PLAYLISTS FOR SHOW
         /// Get a list of playlists for the specified show playlist directory URI
         /// </summary>
-        public List<PlaylistObject> GetListOfShowPlaylists(string playlistDirectoryURI)
+        public BindingList<PlaylistObject> GetListOfShowPlaylists(string playlistDirectoryURI)
         {
 
-            var playlistList = new List<PlaylistObject>();
+            var playlistList = new BindingList<PlaylistObject>();
 
             try
             {

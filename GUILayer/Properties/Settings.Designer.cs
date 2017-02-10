@@ -61,15 +61,6 @@ namespace GUILayer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("PRODUCER_ELEMENTS")]
-        public string ProducerElementsPlaylistNameFNC {
-            get {
-                return ((string)(this["ProducerElementsPlaylistNameFNC"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20")]
         public int ApplicationID {
             get {
@@ -130,15 +121,6 @@ namespace GUILayer.Properties {
         public string TopLevelShowsDirectoryFBN {
             get {
                 return ((string)(this["TopLevelShowsDirectoryFBN"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("PRODUCER_ELEMENTS")]
-        public string ProducerElementsPlaylistNameFBN {
-            get {
-                return ((string)(this["ProducerElementsPlaylistNameFBN"]));
             }
         }
         
