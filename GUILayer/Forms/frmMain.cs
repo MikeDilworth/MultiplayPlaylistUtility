@@ -618,7 +618,7 @@ namespace GUILayer.Forms
             }
         }
 
-        // Handler for data received back from source MSE PepTalkclient socket; this will be the playlist data XML payload
+        // Handler for data received back from source MSE PepTalk client socket; this will be the playlist data XML payload
         private void sourceMSEDataReceived(ClientSocket sender, object data)
         {
             // Make call to format and send the data to the destination MSE
@@ -637,7 +637,6 @@ namespace GUILayer.Forms
 
                 if ((payloadStr.Length > 0) && (payloadStr[0] == '2'))
                 {
-                    //this.sendPayload(data.ToString());
                     this.sendPayload(payloadStr);
                     // Log if debug mode
                     log.Debug("Command data received from source MSE: " + data);
@@ -725,6 +724,21 @@ namespace GUILayer.Forms
             else
             {
                 indicatorDestinationMSE.FillColor = System.Drawing.Color.Gray;
+            }
+
+            // Set UI widgets as needed; done here to sync with client socket threads
+            if (availableShowsGrid.SelectedRows.Count == 0)
+            {
+                selectedShow = string.Empty;
+                lblCurrentShow.Text = "N/A";
+                lblCurrentShow.BackColor = System.Drawing.Color.Yellow;
+            }
+
+            if (availablePlaylistsGrid.SelectedRows.Count == 0)
+            {
+                selectedPlaylist = string.Empty;
+                lblCurrentPlaylist.Text = "N/A";
+                lblCurrentPlaylist.BackColor = System.Drawing.Color.Yellow;
             }
         }
         #endregion
