@@ -424,8 +424,8 @@ namespace MSEInterface
             REST_RESPONSE restResponse = new REST_RESPONSE();
 
             // Create payload 
-            string activateCommand = "<playlistactivation xmlns: viz = \"http://www.vizrt.com/atom\">" +
-                "<viz:active_on_profile >http://" + mseIpAddress + ":" + msePortRest +
+            string activateCommand = "<playlistactivation xmlns:viz=\"http://www.vizrt.com/atom\">" +
+                "<viz:active_on_profile>http://" + mseIpAddress + ":" + msePortRest +
                 "/profiles/STUDIO_F</viz:active_on_profile>" +
                 "</playlistactivation>";
 

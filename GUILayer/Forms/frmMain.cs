@@ -75,6 +75,7 @@ namespace GUILayer.Forms
         // Define the binding list object for the list of available playlists
         private BindingList<PlaylistObject> playlistNames;
         public string selectedPlaylist { get; set; }
+        BindingSource availablePlaylistsGridDataSource;
 
         // Declare TCP client sockets for MSE communications
         public ClientSocket sourceMSEClientSocket;
@@ -214,7 +215,8 @@ namespace GUILayer.Forms
 
                 // Setup the available playlists grid
                 availablePlaylistsGrid.AutoGenerateColumns = false;
-                var availablePlaylistsGridDataSource = new BindingSource(playlistNames, null);
+                //var availablePlaylistsGridDataSource = new BindingSource(playlistNames, null);
+                availablePlaylistsGridDataSource = new BindingSource(playlistNames, null);
                 availablePlaylistsGrid.DataSource = availablePlaylistsGridDataSource;
 
                 // Clear selected row for startup - shows
@@ -966,7 +968,13 @@ namespace GUILayer.Forms
                 if (availableShowsGrid.SelectedRows.Count > 0)
                 {
                     string showPlaylistDirectoryURISource = showSource.GetPlaylistDirectoryFromShow(topLevelShowsDirectoryURIActiveSource, selectedShow);
+
+                    // Get the list of playlists
                     playlistNames = playlistSource.GetListOfShowPlaylists(showPlaylistDirectoryURISource);
+
+                    // Bind the list to the grid
+                    availablePlaylistsGridDataSource = new BindingSource(playlistNames, null);
+                    availablePlaylistsGrid.DataSource = availablePlaylistsGridDataSource;
                 }
             }
         }
