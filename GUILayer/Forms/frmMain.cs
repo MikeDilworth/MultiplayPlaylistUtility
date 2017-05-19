@@ -337,8 +337,8 @@ namespace GUILayer.Forms
                     log.Debug("Error occurred while trying to setup MSE client sockets for PepTalk", ex);
                 }
 
-                // Simple delay for 250mS to allow for connection status change to source & destination MSEs
-                for (int i = 0; i < 25; i++)
+                // Simple delay for 1 second to allow for connection status change to source & destination MSEs
+                for (int i = 0; i < 100; i++)
                 {
                     Application.DoEvents();
                     System.Threading.Thread.Sleep(10);
@@ -964,10 +964,14 @@ namespace GUILayer.Forms
                 lblCurrentShow.BackColor = System.Drawing.Color.Gray;
                 lblCurrentShow.Text = selectedShow;
 
-                // Populate the playlist names grid
+                // Populate the playlist names grid based on the playlist available for the new selected show
                 if (availableShowsGrid.SelectedRows.Count > 0)
                 {
                     string showPlaylistDirectoryURISource = showSource.GetPlaylistDirectoryFromShow(topLevelShowsDirectoryURIActiveSource, selectedShow);
+
+                    // Suspend/disable playlist grid
+                    availablePlaylistsGrid.SuspendLayout();
+                    availablePlaylistsGrid.DataSource = null;
 
                     // Get the list of playlists
                     playlistNames = playlistSource.GetListOfShowPlaylists(showPlaylistDirectoryURISource);
@@ -975,6 +979,9 @@ namespace GUILayer.Forms
                     // Bind the list to the grid
                     availablePlaylistsGridDataSource = new BindingSource(playlistNames, null);
                     availablePlaylistsGrid.DataSource = availablePlaylistsGridDataSource;
+
+                    // Re-enable available playlists grid
+                    availablePlaylistsGrid.ResumeLayout(true);
                 }
             }
         }
