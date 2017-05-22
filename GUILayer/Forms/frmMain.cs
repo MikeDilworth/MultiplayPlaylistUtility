@@ -63,6 +63,7 @@ namespace GUILayer.Forms
         bool mseConnectedSource = false;
         bool mseConnectedDestination = false;
         string networkSelection = string.Empty;
+        string excludedPlaylists = string.Empty;
 
         // Read in database connection strings
         string LoggingDBConnectionString = Properties.Settings.Default.LoggingDBConnectionString;
@@ -173,6 +174,9 @@ namespace GUILayer.Forms
                 topLevelShowsDirectoryFBN = Properties.Settings.Default.TopLevelShowsDirectoryFBN;
                 masterPlaylistsDirectoryFNC = Properties.Settings.Default.MasterPlaylistsDirectoryFNC;
                 masterPlaylistsDirectoryFBN = Properties.Settings.Default.MasterPlaylistsDirectoryFBN;
+
+                // Get the excluded playlists
+                excludedPlaylists = Properties.Settings.Default.ExcludedPlaylists;
 
                 // Read in show & playlist info based on network selected
                 networkSelection = Properties.Settings.Default.NetworkSelection;
@@ -974,7 +978,7 @@ namespace GUILayer.Forms
                     availablePlaylistsGrid.DataSource = null;
 
                     // Get the list of playlists
-                    playlistNames = playlistSource.GetListOfShowPlaylists(showPlaylistDirectoryURISource);
+                    playlistNames = playlistSource.GetListOfShowPlaylistsWithExclusions(showPlaylistDirectoryURISource, excludedPlaylists);
 
                     // Bind the list to the grid
                     availablePlaylistsGridDataSource = new BindingSource(playlistNames, null);

@@ -45,5 +45,8 @@
     <Setting Name="NetworkSelection" Type="System.String" Scope="User">
       <Value Profile="(Default)">FNC</Value>
     </Setting>
+    <Setting Name="ExcludedPlaylists" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SHORTCUTS,VIDEOWALLS,GFX</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

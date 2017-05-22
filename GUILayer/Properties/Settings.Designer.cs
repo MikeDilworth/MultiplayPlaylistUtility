@@ -144,5 +144,14 @@ namespace GUILayer.Properties {
                 this["NetworkSelection"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SHORTCUTS,VIDEOWALLS,GFX")]
+        public string ExcludedPlaylists {
+            get {
+                return ((string)(this["ExcludedPlaylists"]));
+            }
+        }
     }
 }

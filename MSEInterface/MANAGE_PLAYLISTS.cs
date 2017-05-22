@@ -77,6 +77,69 @@ namespace MSEInterface
             return playlistList;
         }
 
+        /// <summary>
+        /// LIST OF PLAYLISTS FOR SHOW WITH EXCLUSIONS
+        /// Get a list of playlists for the specified show playlist directory URI, exlcuding the playlist names in the passed in list
+        /// </summary>
+        public BindingList<PlaylistObject> GetListOfShowPlaylistsWithExclusions(string playlistDirectoryURI, string commaDelimitedListOfExclusions)
+        {
+
+            var playlistList = new BindingList<PlaylistObject>();
+
+            try
+            {
+                XElement playlistDoc;
+
+                GET_URI getURI = new GET_URI();
+
+                // Get the comma-delimited list of excluded playlists pass in with the method
+                string[] excludedPlaylists = commaDelimitedListOfExclusions.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+                // Get all the entries
+                var playlistNames = getURI.SendGETRequest(playlistDirectoryURI).Descendants(Atom + "entry");
+
+                foreach (XElement playlist in playlistNames)
+                {
+                    string title = playlist.Element(Atom + "title").Value;
+
+                    string selfLink = string.Empty;
+                    playlistDoc = playlist.Descendants(Atom + "link")
+                        .Where(x => (string)x.Attribute("rel") == "self")
+                        .FirstOrDefault();
+                    if (playlistDoc != null)
+                    {
+                        selfLink = playlistDoc.Attribute("href").Value;
+                    }
+
+                    string alternateLink = string.Empty;
+                    playlistDoc = playlist.Descendants(Atom + "link")
+                        .Where(x => (string)x.Attribute("rel") == "alternate")
+                        .FirstOrDefault();
+                    if (playlistDoc != null)
+                    {
+                        alternateLink = playlistDoc.Attribute("href").Value;
+                    }
+
+                    // Do LINQ query to see if any element in the array of excluded strings contains the title; if so, don't include it in the list
+                    if (!excludedPlaylists.Any(title.Contains))
+                    {
+                        PlaylistObject playlistObject = new PlaylistObject();
+                        playlistObject.title = title;
+                        playlistObject.selfLink = selfLink;
+                        playlistObject.alternateLink = alternateLink;
+
+                        playlistList.Add(playlistObject);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                log.Error("MANAGE_PLAYLISTS Exception occurred: " + ex.Message);
+                log.Debug("MANAGE_PLAYLISTS Exception occurred", ex);
+            }
+            return playlistList;
+        }
 
         /// <summary>
         /// Check to see if a playlist with the specified name already exists in the VDOM
