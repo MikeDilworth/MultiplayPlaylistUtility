@@ -25,7 +25,7 @@ namespace GUILayer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("172.21.0.35")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.232.8.97")]
         public string MSEIPAddressSource {
             get {
                 return ((string)(this["MSEIPAddressSource"]));
@@ -34,7 +34,7 @@ namespace GUILayer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10.232.15.173")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.232.95.193")]
         public string MSEIPAddressDestination {
             get {
                 return ((string)(this["MSEIPAddressDestination"]));

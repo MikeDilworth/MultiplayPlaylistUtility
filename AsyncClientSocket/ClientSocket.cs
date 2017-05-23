@@ -422,7 +422,9 @@ namespace AsyncClientSocket
         private readonly IPAddress _ip;
         private ConnectionStatus _conStat;
         private readonly TcpClient _client;
-        private readonly byte[] _dataBuffer = new byte[5000];
+        //private readonly byte[] _dataBuffer = new byte[5000];
+        // Increase buffer size to support large Peptalk payloads
+        private readonly byte[] _dataBuffer = new byte[524288];
         private readonly int _port;
         private Encoding _encode = Encoding.Default;
         private readonly object _syncLock = new object();

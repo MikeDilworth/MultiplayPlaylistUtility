@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="MSEIPAddressSource" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">172.21.0.35</Value>
+      <Value Profile="(Default)">10.232.8.97</Value>
     </Setting>
     <Setting Name="MSEIPAddressDestination" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">10.232.15.173</Value>
+      <Value Profile="(Default)">10.232.95.193</Value>
     </Setting>
     <Setting Name="TopLevelShowsDirectoryFNC" Type="System.String" Scope="Application">
       <Value Profile="(Default)">directory/shows/FNC/</Value>
