@@ -981,6 +981,7 @@ namespace GUILayer.Forms
                     playlistNames = playlistSource.GetListOfShowPlaylistsWithExclusions(showPlaylistDirectoryURISource, excludedPlaylists);
 
                     // Bind the list to the grid
+                    availablePlaylistsGrid.AutoGenerateColumns = false;
                     availablePlaylistsGridDataSource = new BindingSource(playlistNames, null);
                     availablePlaylistsGrid.DataSource = availablePlaylistsGridDataSource;
 
