@@ -8,6 +8,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.IO;
 using log4net.Appender;
 using LogicLayer.CommonClasses;
 using MSEInterface;
@@ -87,6 +88,10 @@ namespace GUILayer.Forms
 
         // For debug
         bool showDebugWindow = false;
+
+        bool writeDebugTextFiles = false;
+        int fileCount = 0;
+        string payloadStr = string.Empty;
 
         #endregion
 
@@ -312,6 +317,9 @@ namespace GUILayer.Forms
                 {
                     // Clear debug text box
                     this.tbDebug.Text = "";
+
+                    // Clear the data string for the next iteration
+                    payloadStr = string.Empty;
 
                     // Instantiate and setup the client sockets
                     // Establish the remote endpoints for the sockets
@@ -630,7 +638,7 @@ namespace GUILayer.Forms
             // Make call to format and send the data to the destination MSE
             // Only send if it's the XML payload => command ID = 2
             string inStr = data.ToString();
-            string payloadStr = string.Empty;
+            //string payloadStr = string.Empty;
 
             // Check for, and strip out echoed protocol command
             if (inStr[0] == '1')
@@ -638,12 +646,32 @@ namespace GUILayer.Forms
 
                 // Strip out any echoed protocol command 
                 int startPos = inStr.IndexOf("\r\n") + 2;
-                payloadStr = inStr.Substring(startPos);
-                //payloadStr = payloadStr.Substring(0, payloadStr.Length - 1);
+                //payloadStr = inStr.Substring(startPos);
+                payloadStr = payloadStr + inStr.Substring(startPos);
 
                 if ((payloadStr.Length > 0) && (payloadStr[0] == '2'))
                 {
-                    this.sendPayload(payloadStr);
+                    //this.sendPayload(payloadStr);
+                    if (payloadStr.IndexOf("</playlist>") != -1)
+                    {
+                        this.sendPayload(payloadStr);
+
+                        // DEBUG
+                        // Write the data out to a debug text file
+                        if (writeDebugTextFiles)
+                        {
+                            fileCount++;
+                            using (StreamWriter writer = new StreamWriter("c:\\Temp\\DataIn" + fileCount.ToString() + ".txt"))
+                            {
+                                writer.Write("Length: " + payloadStr.Length.ToString());
+                                writer.WriteLine("");
+                                writer.Write(payloadStr);
+                            }
+                        }
+                        
+                        // Clear the string for the next iteration
+                        payloadStr = string.Empty;
+                    }
                     // Log if debug mode
                     log.Debug("Command data received from source MSE: " + data);
                 }
@@ -651,8 +679,58 @@ namespace GUILayer.Forms
             }
             else if (inStr[0] == '2')
             {
-                payloadStr = inStr;
-                this.sendPayload(payloadStr);
+                //payloadStr = inStr;
+                payloadStr = payloadStr + inStr;
+
+                if (payloadStr.IndexOf("</playlist>") != -1)
+                {
+                    this.sendPayload(payloadStr);
+
+                    // DEBUG
+                    // Write the data out to a debug text file
+                    if (writeDebugTextFiles)
+                    {
+                        fileCount++;
+                        using (StreamWriter writer = new StreamWriter("c:\\Temp\\DataIn" + fileCount.ToString() + ".txt"))
+                        {
+                            writer.Write("Length: " + payloadStr.Length.ToString());
+                            writer.WriteLine("");
+                            writer.Write(payloadStr);
+                        }
+                    }
+
+                    // Clear the string for the next iteration
+                    payloadStr = string.Empty;
+                }
+                // Log if debug mode
+                log.Debug("Command data received from source MSE: " + data);
+            }
+            // This block will occur when the data is chunked
+            else
+            {
+                //payloadStr = inStr;
+                payloadStr = payloadStr + inStr;
+
+                if (payloadStr.IndexOf("</playlist>") != -1)
+                {
+                    this.sendPayload(payloadStr);
+
+                    // DEBUG
+                    // Write the data out to a debug text file
+                    if (writeDebugTextFiles)
+                    {
+                        fileCount++;
+                        using (StreamWriter writer = new StreamWriter("c:\\Temp\\DataIn" + fileCount.ToString() + ".txt"))
+                        {
+                            writer.Write("Length: " + payloadStr.Length.ToString());
+                            writer.WriteLine("");
+                            writer.Write(payloadStr);
+                        }
+                    }
+
+                    // Clear the string for the next iteration
+                    payloadStr = string.Empty;
+                }
                 // Log if debug mode
                 log.Debug("Command data received from source MSE: " + data);
             }
