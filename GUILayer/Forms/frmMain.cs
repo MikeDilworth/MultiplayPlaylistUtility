@@ -217,6 +217,19 @@ namespace GUILayer.Forms
                 // Populate grid/list of shows
                 showNames = showSource.GetListOfShows(topLevelShowsDirectoryURIActiveSource);
 
+                // If no shows found, MSE may be disconnected so throw error and alert user
+                if (showNames.Count == 0)
+                {
+                    // Log and alert user
+                    log.Error("Could not connect to source Media Sequencer or no shows found!");
+                    log.Debug("Could not connect to source Media Sequencer or no shows found!");
+
+                    toolStripStatusLabel.BackColor = System.Drawing.Color.Red;
+                    toolStripStatusLabel.Text = String.Format("Could not connect to source Media Sequencer or no shows found!");
+
+                    return;
+                }
+
                 // Setup the available shows grid
                 availableShowsGrid.AutoGenerateColumns = false;
                 var availableShowsGridDataSource = new BindingSource(showNames, null);
@@ -1057,6 +1070,25 @@ namespace GUILayer.Forms
 
                     // Get the list of playlists
                     playlistNames = playlistSource.GetListOfShowPlaylistsWithExclusions(showPlaylistDirectoryURISource, excludedPlaylists);
+
+                    // If no playlists found, MSE may be disconnected so throw error and alert user
+                    if (playlistNames.Count == 0)
+                    {
+                        // Log and alert user
+                        log.Error("Could not connect to source Media Sequencer or no playlists found!");
+                        log.Debug("Could not connect to source Media Sequencer or no playlists found!");
+
+                        toolStripStatusLabel.BackColor = System.Drawing.Color.Red;
+                        toolStripStatusLabel.Text = String.Format("Could not connect to source Media Sequencer or no playlists found!");
+
+                        return;
+                    }
+                    else
+                    {
+                        toolStripStatusLabel.BackColor = System.Drawing.Color.SpringGreen;
+                        //toolStripStatusLabel.Text = String.Format("Playlist(s) found.");
+                    }
+
 
                     // Bind the list to the grid
                     availablePlaylistsGrid.AutoGenerateColumns = false;
