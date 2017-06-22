@@ -600,20 +600,30 @@ namespace GUILayer.Forms
                 string showPlaylistsDirectoryURISource = showSource.GetPlaylistDirectoryFromShow(topLevelShowsDirectoryURIActiveSource, selectedShow);
                 string showPlaylistsDirectoryURIDestination = showSource.GetPlaylistDirectoryFromShow(topLevelShowsDirectoryURIActiveDestination, selectedShow);
 
-                // Get self link for the destination playlist & activate the playlist
-                string playlistSelfLinkDestination = playlistDestination.GetPlaylistRelatedLink(showPlaylistsDirectoryURIDestination, producerElementsPlaylistNameActive);
-                if (playlistSelfLinkDestination != string.Empty)
+                // Get related link for the destination playlist & activate the playlist - REPLACED WITH FUNCTION THAT FOLLOWS
+                /*
+                string playlistRelatedLinkDestination = playlistDestination.GetPlaylistRelatedLink(showPlaylistsDirectoryURIDestination, producerElementsPlaylistNameActive);
+                if (playlistRelatedLinkDestination != string.Empty)
                 {
                     // Send PUT command to activate playlist on destination
-                    playlistDestination.ActivatePlaylist(playlistSelfLinkDestination, mseIpAddressDestination, msePortRest);
+                    playlistDestination.ActivatePlaylist(playlistRelatedLinkDestination, mseIpAddressDestination, msePortRest);
                 }
+                */
 
-                // Get self link for the source playlist & activate the playlist
-                string playlistSelfLinkSource = playlistSource.GetPlaylistRelatedLink(showPlaylistsDirectoryURISource, producerElementsPlaylistNameActive);
-                if (playlistSelfLinkSource != string.Empty)
+                // Get related link for the source playlist & activate the playlist
+                string playlistRelatedLinkSource = playlistSource.GetPlaylistRelatedLink(showPlaylistsDirectoryURISource, producerElementsPlaylistNameActive);
+                if (playlistRelatedLinkSource != string.Empty)
                 {
                     // Send PUT command to activate playlist
-                    playlistSource.ActivatePlaylist(playlistSelfLinkSource, mseIpAddressSource, msePortRest);
+                    playlistSource.ActivatePlaylist(playlistRelatedLinkSource, mseIpAddressSource, msePortRest);
+                }
+
+                // Get related link for the destination playlist & activate the playlist - REPLACED METHOD ABOVE
+                string playlistRelatedLinkDestination = playlistDestination.GetPlaylistRelatedLink(showPlaylistsDirectoryURIDestination, producerElementsPlaylistNameActive);
+                if (playlistRelatedLinkDestination != string.Empty)
+                {
+                    // Send PUT command to activate playlist on destination
+                    playlistDestination.ActivatePlaylistAfterUpdate(playlistRelatedLinkDestination, mseIpAddressDestination, msePortRest);
                 }
 
                 // Set focus to playlist select grid & clear selection

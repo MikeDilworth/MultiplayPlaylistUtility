@@ -217,15 +217,15 @@ namespace MSEInterface
                         // If title matches, get the Alt-link to the playlist
                         if (title == playlistName)
                         {
-                            string altLink = string.Empty;
+                            string relatedLink = string.Empty;
                             playlistDoc = playlist.Descendants(Atom + "link")
                                 .Where(x => (string)x.Attribute("rel") == "related")
                                 .FirstOrDefault();
                             if (playlistDoc != null)
                             {
-                                altLink = playlistDoc.Attribute("href").Value;
+                                relatedLink = playlistDoc.Attribute("href").Value;
                                 // Set return value
-                                playlistRelatedLink = altLink;
+                                playlistRelatedLink = relatedLink;
                             }
                             break;
                         }
@@ -479,7 +479,7 @@ namespace MSEInterface
         }
 
         /// <summary>
-        /// Activate the specified playlist
+        /// Activate the specified playlist - THIS METHOD DEPRECATED - SEE ActivatePlaylistAfterUpdate method below
         /// </summary>
         public REST_RESPONSE ActivatePlaylist(string playlistURI, string mseIpAddress, int msePortRest)
         {
@@ -513,7 +513,7 @@ namespace MSEInterface
         }
 
         /// <summary>
-        /// Activate the specified playlist
+        /// Deactivate the specified playlist
         /// </summary>
         public REST_RESPONSE DeActivatePlaylist(string playlistURI)
         {
@@ -544,5 +544,38 @@ namespace MSEInterface
             return restResponse;
         }
 
+        /// <summary>
+        /// Activate the specified playlist after it's been updated
+        /// </summary>
+        public REST_RESPONSE ActivatePlaylistAfterUpdate(string playlistRelatedURI, string mseIpAddressDestination, int msePortRest)
+        {
+            // e.g. http://10.232.95.193:8580/activation/storage/shows/%7B5F023424-1D3A-4DFB-8B44-C75402C03AEE%7D//playlists/playlist%233
+
+            //Save the results in a new object
+            REST_RESPONSE restResponse = new REST_RESPONSE();
+
+            // Create payload 
+            string activateCommand = "<playlistactivation><active_on_profile>http://" + mseIpAddressDestination + ":" + msePortRest.ToString() + 
+                "/profiles/STUDIO_F</active_on_profile></playlistactivation>";
+
+            byte[] bdata = System.Text.Encoding.UTF8.GetBytes(activateCommand);
+
+            try
+            {
+                // Instantiate REST client and send to destination MSE
+                REST_CLIENT client = new REST_CLIENT(playlistRelatedURI, HttpVerb.PUT, bdata, ContentTypes.PlaylistActivation);
+
+                // Don't expect REST response to PUT operation; response declared for proper method call
+                var response = client.MakeRequest();
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                log.Error("MANAGE_PLAYLISTS Exception occurred while attempting to activate playlist: " + ex.Message);
+                log.Debug("MANAGE_PLAYLISTS Exception occurred while attempting to activate playlist", ex);
+            }
+
+            return restResponse;
+        }
     }
 }
